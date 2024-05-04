@@ -41,4 +41,14 @@ public class TestController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while registering the user");
         }
     }
+
+    @RequestMapping("/login")
+    public ResponseEntity<String> login() {
+        return ResponseEntity.ok("Inloggningen lyckades");
+    }
+
+    @GetMapping("/testAuthentication")
+    public ResponseEntity<String> testAuthentication() {
+        return ResponseEntity.ok("Autentiserad");
+    }
 }

@@ -15,7 +15,10 @@ public class ProjectSecurityConfig {
     SecurityFilterChain defaultSecurityFilterChain(final HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests((requests) -> requests.anyRequest().permitAll());
+                .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/api/v1/login", "api/v1/testAuthentication").authenticated()
+                        .anyRequest().permitAll())
+                .formLogin(form -> form.loginProcessingUrl("/api/v1/login"));
 
         return http.build();
     }
