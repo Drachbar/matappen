@@ -15,4 +15,8 @@ CREATE TABLE `user`
     `activated` tinyint               DEFAULT '0',
     PRIMARY KEY (`user_id`),
     UNIQUE KEY `email` (`email`)
-)
+);
+
+-- Lösen: 12345
+INSERT INTO user(name, email, password)
+values ("Mattias", "matte@andersson.se", "$2a$10$klNU4q0egP.93Kp97ad4quDnmK7Oxz6xJQDmeedMdWnc6ALnEVSFi");
