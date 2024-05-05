@@ -33,8 +33,12 @@ public class MatappenUsernamePwdAuthenticationProvider implements Authentication
             throw new BadCredentialsException("Användaren finns inte");
         }
 
+        if (!user.getActivated()) {
+            throw new BadCredentialsException("Användaren har inte aktiverats ännu");
+        }
+
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new BadCredentialsException("Password incorrect");
+            throw new BadCredentialsException("Felaktigt lösenord");
         }
 
         final List<GrantedAuthority> authorities = new ArrayList<>();

@@ -33,4 +33,7 @@ public class User {
     @CreationTimestamp
     private LocalDateTime createDt;
 
+    @Column(name = "activated", nullable = false)
+    private Boolean activated = false;
+
 }
