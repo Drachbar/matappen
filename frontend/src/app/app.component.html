@@ -1,20 +1,21 @@
 <h1>Hejsan</h1>
+
+<a routerLink="/register">Skapa konto</a>
+<br>
+<a routerLink="/login">Logga in</a>
+<br>
+<br>
+
 <form (ngSubmit)="getUserByEmail()">
   <input type="email" name="email" [(ngModel)]="formGetUser.email" required>
   <button type="submit">Skicka</button>
 </form>
-<form (ngSubmit)="registerUser()">
-  <input type="text" name="name" [(ngModel)]="formRegisterUser.name" required>
-  <input type="email" name="email" [(ngModel)]="formRegisterUser.email" required>
-  <input type="password" name="password" [(ngModel)]="formRegisterUser.password" required>
-  <button type="submit">Skicka</button>
-</form>
-<form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
-  <label for="login-email">Email:</label>
-  <input type="email" id="login-email" name="username" [(ngModel)]="loginData.username" required>
-  <br>
-  <label for="login-password">Lösenord:</label>
-  <input type="password" id="login-password" name="password" [(ngModel)]="loginData.password" required>
-  <button type="submit">Logga in</button>
-</form>
+<br>
+<br>
+
 <button (click)="testAuth()">Testa autentisering</button>
+
+<br>
+<br>
+
+<router-outlet></router-outlet>
