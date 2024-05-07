@@ -27,7 +27,7 @@ public class ProjectSecurityConfig {
                 })
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/api/v1/login", "api/v1/testAuthentication").authenticated()
+                        .requestMatchers("/api/v1/login", "api/v1/testAuthentication", "api/v1/recipe/add").authenticated()
                         .anyRequest().permitAll())
                 .formLogin(form -> form.loginProcessingUrl("/api/v1/login"));
 

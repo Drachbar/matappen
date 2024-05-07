@@ -1,0 +1,16 @@
+<ng-container *ngIf="recipe">
+  <h2>{{recipe.recipeDto.nameRecipe}}</h2>
+  <p>{{recipe.recipeDto.description}}</p>
+  <p>{{recipe.recipeDto.creatorName}}</p>
+  <h3>Ingredienser</h3>
+  <ng-container *ngFor="let ingredientSection of recipe.ingredientSectionsDto">
+    <h4>{{ingredientSection.name}}</h4>
+    <ng-container *ngFor="let ingredient of ingredientSection.ingredients">
+      <p>{{ingredient.amount}} {{ingredient.unit}} {{ingredient.name}}</p>
+    </ng-container>
+  </ng-container>
+  <h3>Gör så här</h3>
+  <ng-container *ngFor="let step of recipe.recipeStepsDto">
+    <p>{{step.description}}</p>
+  </ng-container>
+</ng-container>

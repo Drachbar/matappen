@@ -1,0 +1,65 @@
+<form (ngSubmit)="createRecipe()">
+  <fieldset>
+    <legend>Recipe Details</legend>
+    <label for="recipe-name">Namn på recept:</label>
+    <input type="text" id="recipe-name" name="name" [(ngModel)]="recipeData.nameRecipe" required>
+
+    <label for="recipe-description">Beskrivning:</label>
+    <input type="text" id="recipe-description" name="description" [(ngModel)]="recipeData.description" required>
+  </fieldset>
+
+  <fieldset>
+    <legend>Steg</legend>
+    <div class="step-section" *ngFor="let step of recipeData.steps; let i = index">
+      <label for="description{{i}}">Stegbeskrivning:</label>
+      <input type="text" [(ngModel)]="step.description" id="description{{i}}" name="description{{i}}"
+             placeholder="Stegbeskrivning" required>
+
+      <label for="order{{i}}">Stegordning:</label>
+      <input type="number" [(ngModel)]="step.stepOrder" id="order{{i}}" name="order{{i}}" placeholder="Stegordning"
+             required>
+
+      <button (click)="removeStep(i)">Ta bort Steg</button>
+    </div>
+  <button (click)="addStep()" type="button">Lägg till Steg</button>
+  </fieldset>
+
+
+  <fieldset *ngFor="let section of recipeData.sections; let i = index">
+    <legend>Ingredient Group {{ i + 1 }}</legend>
+    <label for="ingredient-section-name{{i}}">Ingrediensgrupp:</label>
+    <input type="text" [(ngModel)]="section.name" id="ingredient-section-name{{i}}"
+           name="ingredient-section-name{{i}}"
+           placeholder="Ingrediensgrupp" required>
+
+    <button (click)="removeSection(i)">Ta bort ingrediensgrupp</button>
+    <div class="ingredient-section" *ngFor="let ingredient of section.ingredients; let j = index">
+      <div>
+        <label for="ingredient-name{{i}}{{j}}">Ingrediens:</label>
+        <input type="text" [(ngModel)]="ingredient.name" id="ingredient-name{{i}}{{j}}" name="ingredient-name{{i}}{{j}}"
+               placeholder="Ingrediens" required>
+      </div>
+      <div>
+        <label for="ingredient-unit{{i}}{{j}}">Enhet:</label>
+        <input type="text" [(ngModel)]="ingredient.unit" id="ingredient-unit{{i}}{{j}}" name="ingredient-unit{{i}}{{j}}"
+               placeholder="Enhet">
+      </div>
+      <div>
+        <label for="ingredient-amount{{i}}{{j}}">Antal:</label>
+        <input type="number" [(ngModel)]="ingredient.amount" id="ingredient-amount{{i}}{{j}}"
+               name="ingredient-amount{{i}}{{j}}" placeholder="Antal">
+      </div>
+      <div>
+        <label for="ingredient-order{{i}}{{j}}">Ordning:</label>
+        <input type="number" [(ngModel)]="ingredient.ingredientOrder" id="ingredient-order{{i}}{{j}}"
+               name="ingredient-order{{i}}{{j}}" placeholder="Ordning" required>
+      </div>
+      <button (click)="removeIngredient(i, j)" type="button">Ta bort ingrediens</button>
+    </div>
+    <button (click)="addIngredient(i)" type="button">Lägg till ingrediens</button>
+  </fieldset>
+
+  <button (click)="addSection()" type="button">Lägg till ingrediensgrupp</button>
+
+  <button type="submit">Skapa recept</button>
+</form>
