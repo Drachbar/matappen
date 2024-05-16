@@ -29,7 +29,7 @@ export class AppComponent {
   }
 
   testAuth() {
-    this.http.get('api/v1/testAuthentication').subscribe({
+    this.http.get('api/v1/testAuthentication', {responseType: 'text'}).subscribe({
       next: (response) => console.log('Success:', response),
       error: (error) => console.error('Failure:', error)
     });

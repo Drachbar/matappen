@@ -28,7 +28,10 @@ export class LoginComponent {
       formData.append('username', this.loginData.username);
       formData.append('password', this.loginData.password);
 
-      this.http.post('/api/v1/login', formData, {withCredentials: true}).subscribe({
+      this.http.post('/api/v1/login', formData, {
+        withCredentials: true,
+        responseType: 'text'
+      }).subscribe({
         next: (response) => console.log('Success:', response),
         error: (error) => console.error('Failure:', error)
       });
