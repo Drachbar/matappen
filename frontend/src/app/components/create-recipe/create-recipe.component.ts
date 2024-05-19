@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {CommonModule} from "@angular/common";
+import {UploadImagesComponent} from "../upload-images/upload-images.component";
 
 @Component({
   selector: 'app-create-recipe',
@@ -9,7 +10,8 @@ import {CommonModule} from "@angular/common";
   imports: [
     FormsModule,
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    UploadImagesComponent
   ],
   templateUrl: './create-recipe.component.html',
   styleUrl: './create-recipe.component.scss'
