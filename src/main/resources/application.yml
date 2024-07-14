@@ -5,3 +5,7 @@ spring:
     url: jdbc:mysql://localhost:3306/matappen
     username: root
     password: password
+  mvc:
+    contentnegotiation:
+      media-types:
+        wasm: application/wasm

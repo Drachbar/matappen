@@ -1,11 +1,3 @@
-<div>
-  <input type="file" (change)="onFileSelected($event)" />
-  <input type="number" [(ngModel)]="width" placeholder="Width" />
-  <input type="number" [(ngModel)]="height" placeholder="Height" />
-  <select [(ngModel)]="format">
-    <option value="png">PNG</option>
-    <option value="jpeg">JPEG</option>
-    <option value="webp">WebP</option>
-  </select>
-  <button (click)="convertImage(selectedFile!, width, height, format)">Convert</button>
-</div>
+<h1>Bildkonverterare</h1>
+<input type="file" (change)="onFileSelected($event)">
+<button (click)="convertImage()">Konvertera Bild</button>
