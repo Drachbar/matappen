@@ -43,12 +43,36 @@ export class CreateRecipeComponent {
     ]
   };
 
+  uploadedFiles: File[] = []; // För att lagra de valda filerna
+
   constructor(private http: HttpClient) {
   }
 
+  onFileSelect(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    if (target.files) {
+      this.uploadedFiles = Array.from(target.files); // Lagra filerna
+    }
+  }
+
   createRecipe() {
-    this.http.post('api/v1/recipe/add', this.recipeData).subscribe({
-      next: (response) => console.log('Data skickades!', response),
+    // Skapa ett FormData-objekt
+    const formData = new FormData();
+
+    // Lägg till receptdata som JSON
+    formData.append(
+      'recipe',
+      new Blob([JSON.stringify(this.recipeData)], { type: 'application/json' })
+    );
+
+    // Lägg till alla uppladdade filer
+    this.uploadedFiles.forEach((file) => {
+      formData.append('images', file);
+    });
+
+    // Skicka POST-förfrågan
+    this.http.post('api/v1/recipe/add', formData).subscribe({
+      next: (response) => console.log('Receptet skapades!', response),
       error: (error) => console.error('Det blev ett fel!', error)
     });
   }

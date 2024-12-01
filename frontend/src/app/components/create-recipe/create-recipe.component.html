@@ -1,4 +1,4 @@
-<form (ngSubmit)="createRecipe()">
+<form (ngSubmit)="createRecipe()" enctype="multipart/form-data">
   <fieldset>
     <legend>Recipe Details</legend>
     <label for="recipe-name">Namn på recept:</label>
@@ -60,6 +60,17 @@
   </fieldset>
 
   <button (click)="addSection()" type="button">Lägg till ingrediensgrupp</button>
+
+  <fieldset>
+    <legend>Ladda upp bilder</legend>
+    <input type="file" (change)="onFileSelect($event)" multiple>
+    <div *ngIf="uploadedFiles.length > 0">
+      <p>Uppladdade filer:</p>
+      <ul>
+        <li *ngFor="let file of uploadedFiles">{{ file.name }}</li>
+      </ul>
+    </div>
+  </fieldset>
 
   <button type="submit">Skapa recept</button>
 </form>
