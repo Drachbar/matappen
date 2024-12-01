@@ -37,7 +37,7 @@ export class UploadImagesComponent {
     }
     const width = 300; // exempelbredd
     const height = 200; // exempelhöjd
-    const format = 'png'; // exempelformat
+    const format = 'webp'; // exempelformat
 
     try {
       const convertedImage = await this.imageConverterService.processImage(this.imageFile, width, height, format);

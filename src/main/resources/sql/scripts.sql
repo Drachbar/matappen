@@ -67,3 +67,15 @@ CREATE TABLE `ingredient`
     KEY                `ingredient-ingredient_section_id` (`fk_section_id`),
     CONSTRAINT `ingredient-ingredient_section` FOREIGN KEY (`fk_section_id`) REFERENCES `ingredient_section` (`ingredient_section_id`)
 );
+
+CREATE TABLE `recipe_images`
+(
+    `image_id`  int          NOT NULL AUTO_INCREMENT,
+    `recipe_id` int          NOT NULL,
+    `order`     int          NOT NULL,
+    `name`      varchar(200) NOT NULL,
+    `width`     int          NOT NULL,
+    PRIMARY KEY (`image_id`),
+    UNIQUE KEY `unique_recipe_image` (`recipe_id`, `order`, `width`),
+    CONSTRAINT `fk_recipe_images_recipe` FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`recipe_id`)
+);
