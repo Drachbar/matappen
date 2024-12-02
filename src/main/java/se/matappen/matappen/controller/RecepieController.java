@@ -41,25 +41,6 @@ public class RecepieController {
             @RequestPart("recipe") Recipe recipe,
             @RequestPart("images") List<MultipartFile> images) throws IOException {
 
-        System.out.println(recipe.getNameRecipe());
-        System.out.println(recipe.getId());
-        System.out.println(recipe.getCreator());
-        System.out.println(recipe.getDescription());
-        recipe.getSections().forEach(section -> {
-            System.out.println(section.getName());
-            System.out.println(section.getFkRecipe());
-            System.out.println(section.getId());
-            System.out.println(section.getSectionOrder());
-            section.getIngredients().forEach(ingredient -> {
-                System.out.println(ingredient.getName());
-                System.out.println(ingredient.getId());
-                System.out.println(ingredient.getAmount());
-                System.out.println(ingredient.getIngredientOrder());
-                System.out.println(ingredient.getFkSection());
-
-            });
-        });
-
         // Hämta den inloggade användaren
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepository.findByEmail(authentication.getName());

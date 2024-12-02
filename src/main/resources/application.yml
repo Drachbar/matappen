@@ -15,4 +15,4 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
 upload:
-  path: C:\Users\Matti\programmering\projekt\matappen\src\main\resources\images
+  path: C:\Users\Matti\Programmering\UploadFolder\matappen
