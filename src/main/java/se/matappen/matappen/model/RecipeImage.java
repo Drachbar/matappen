@@ -21,4 +21,5 @@ public class RecipeImage {
     private int order;
     private String name;
     private int width;
+    private int height;
 }

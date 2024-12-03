@@ -72,6 +72,7 @@ public class RecepieController {
                 recipeImage.setOrder(order++);
                 recipeImage.setName(filename);
                 recipeImage.setWidth(bufferedImage.getWidth());
+                recipeImage.setHeight(bufferedImage.getHeight());
 
                 recipe.getImages().add(recipeImage); // Lägg till bilder i receptet
             }

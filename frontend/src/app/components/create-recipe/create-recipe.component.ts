@@ -3,6 +3,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {CommonModule} from "@angular/common";
 import {UploadImagesComponent} from "../upload-images/upload-images.component";
+import {ImageConverterService} from "../../services/image-converter.service";
 
 @Component({
   selector: 'app-create-recipe',
@@ -45,13 +46,32 @@ export class CreateRecipeComponent {
 
   uploadedFiles: File[] = []; // För att lagra de valda filerna
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private imageConverterService: ImageConverterService) {
   }
 
   onFileSelect(event: Event): void {
     const target = event.target as HTMLInputElement;
     if (target.files) {
-      this.uploadedFiles = Array.from(target.files); // Lagra filerna
+      const files = Array.from(target.files);
+      this.uploadedFiles = []; // Töm listan med gamla filer
+      files.forEach((file) => this.convertAndAddFile(file));
+    }
+  }
+
+  async convertAndAddFile(file: File) {
+    const width = 300; // exempelbredd
+    const height = 200; // exempelhöjd
+    const format = 'webp'; // exempelformat
+
+    try {
+      const convertedImage = await this.imageConverterService.processImage(file, width, height, format);
+      if (convertedImage) {
+        const blob = await (await fetch(convertedImage)).blob();
+        const convertedFile = new File([blob], file.name.split('.')[0] + '.webp', { type: 'image/webp' });
+        this.uploadedFiles.push(convertedFile); // Lägg till den konverterade bilden
+      }
+    } catch (error) {
+      console.error('Kunde inte konvertera bilden:', error);
     }
   }
 

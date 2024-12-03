@@ -56,6 +56,6 @@ public class RecipeMapper {
     }
 
     public ImagesDto toImagesDto(RecipeImage image) {
-        return new ImagesDto(image.getName(), image.getWidth(), image.getOrder());
+        return new ImagesDto(image.getName(), image.getWidth(), image.getHeight(), image.getOrder());
     }
 }
