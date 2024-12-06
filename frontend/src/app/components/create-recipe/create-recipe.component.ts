@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {CommonModule} from "@angular/common";
-import {UploadImagesComponent} from "../upload-images/upload-images.component";
 import {ImageConverterService} from "../../services/image-converter.service";
 
 @Component({
@@ -12,7 +11,6 @@ import {ImageConverterService} from "../../services/image-converter.service";
     FormsModule,
     CommonModule,
     ReactiveFormsModule,
-    UploadImagesComponent
   ],
   templateUrl: './create-recipe.component.html',
   styleUrl: './create-recipe.component.scss'
@@ -59,12 +57,29 @@ export class CreateRecipeComponent {
   }
 
   async convertAndAddFile(file: File) {
-    const width = 300; // exempelbredd
-    const height = 200; // exempelhöjd
-    const format = 'webp'; // exempelformat
+    const maxWidth = 500; // Maximal bredd
+    const maxHeight = 600; // Maximal höjd
+    const format = 'webp'; // Exempelformat
 
     try {
-      const convertedImage = await this.imageConverterService.processImage(file, width, height, format);
+      // Skapa ett HTMLImageElement för att läsa bildens ursprungliga dimensioner
+      const img = await this.createImage(file);
+
+      // Beräkna skalenliga dimensioner baserat på maxmåtten
+      let targetWidth = img.width;
+      let targetHeight = img.height;
+
+      if (img.width > maxWidth || img.height > maxHeight) {
+        const widthRatio = maxWidth / img.width;
+        const heightRatio = maxHeight / img.height;
+        const scalingFactor = Math.min(widthRatio, heightRatio); // Välj den minsta skalningsfaktorn för att passa in i både bredd och höjd
+
+        targetWidth = img.width * scalingFactor;
+        targetHeight = img.height * scalingFactor;
+      }
+
+      // Konvertera bilden med de beräknade dimensionerna
+      const convertedImage = await this.imageConverterService.processImage(file, targetWidth, targetHeight, format, 1);
       if (convertedImage) {
         const blob = await (await fetch(convertedImage)).blob();
         const convertedFile = new File([blob], file.name.split('.')[0] + '.webp', { type: 'image/webp' });
@@ -73,6 +88,21 @@ export class CreateRecipeComponent {
     } catch (error) {
       console.error('Kunde inte konvertera bilden:', error);
     }
+  }
+
+// Hjälpfunktion för att skapa en bild från en fil
+  private createImage(file: File): Promise<HTMLImageElement> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = (error) => reject(error);
+        img.src = event.target?.result as string;
+      };
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(file);
+    });
   }
 
   createRecipe() {
