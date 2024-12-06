@@ -1,0 +1,8 @@
+<div>
+  <h1>Bildkonverterare</h1>
+  <input type="file" id="file-input" (change)="onFileSelected($event)">
+  <div *ngIf="imageUrl">
+    <h2>Konverterad Bild:</h2>
+    <img [src]="imageUrl" alt="Converted Image">
+  </div>
+</div>
