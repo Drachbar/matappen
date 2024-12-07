@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {CommonModule} from "@angular/common";
-import {ImageConverterService} from "../../services/image-converter.service";
+import {FallbackImageConverterService} from "../../services/ImageConverterServices/fallback-image-converter.service";
 
 @Component({
   selector: 'app-create-recipe',
@@ -44,7 +44,7 @@ export class CreateRecipeComponent {
 
   uploadedFiles: File[] = []; // För att lagra de valda filerna
 
-  constructor(private http: HttpClient, private imageConverterService: ImageConverterService) {
+  constructor(private http: HttpClient, private imageConverterService: FallbackImageConverterService) {
   }
 
   onFileSelect(event: Event): void {
