@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from "@angular/forms";
-import { ImageConverterService } from "../../services/image-converter.service";
+import {FallbackImageConverterService} from "../../services/ImageConverterServices/fallback-image-converter.service";
 
 @Component({
   selector: 'app-upload-images',
@@ -16,7 +16,7 @@ export class UploadImagesComponent {
   private imageData: Uint8Array | undefined;
   private imageFile: File | undefined;
 
-  constructor(private imageConverterService: ImageConverterService) {}
+  constructor(private imageConverterService: FallbackImageConverterService) {}
 
   onFileSelected(event: any) {
     const file = event.target.files[0];

@@ -1,6 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { RecipeComponent } from './recipe.component';
+import {RecipeComponent} from './recipe.component';
+import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {ActivatedRoute, convertToParamMap} from "@angular/router";
 
 describe('RecipeComponent', () => {
   let component: RecipeComponent;
@@ -8,10 +10,18 @@ describe('RecipeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RecipeComponent]
+      imports: [RecipeComponent, HttpClientTestingModule],
+      providers: [{
+        provide: ActivatedRoute,
+        useValue: {
+          snapshot: {
+            paramMap: convertToParamMap({ id: '1' }), // Mocka paramMap
+          },
+        }
+      }],
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(RecipeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
