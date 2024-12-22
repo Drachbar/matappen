@@ -1,4 +1,7 @@
 <ng-container *ngIf="recipe">
+  @for (image of recipe.imagesDto; track image.name) {
+    <img src="/images/{{image.name}}" alt="bild">
+  }
   <h2>{{recipe.recipeDto.nameRecipe}}</h2>
   <p>{{recipe.recipeDto.description}}</p>
   <p>{{recipe.recipeDto.creatorName}}</p>

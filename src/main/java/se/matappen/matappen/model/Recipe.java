@@ -34,4 +34,7 @@ public class Recipe {
     @OneToMany(mappedBy = "fkRecipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<IngredientSection> sections = new ArrayList<>();
 
+    @OneToMany(mappedBy = "fkRecipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RecipeImage> images = new ArrayList<>();
+
 }

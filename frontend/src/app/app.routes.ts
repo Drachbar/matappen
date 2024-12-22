@@ -10,5 +10,5 @@ export const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'recipe/create-recipe', component: CreateRecipeComponent},
   {path: 'recipe/search-recipe', component: SearchRecipeComponent},
-  {path: 'recipe/show-recipe/:id', component: RecipeComponent}
+  {path: 'recipe/show-recipe/:id', component: RecipeComponent},
 ];

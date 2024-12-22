@@ -2,10 +2,7 @@ package se.matappen.matappen.mapper;
 
 import org.springframework.stereotype.Component;
 import se.matappen.matappen.dto.*;
-import se.matappen.matappen.model.Ingredient;
-import se.matappen.matappen.model.IngredientSection;
-import se.matappen.matappen.model.Recipe;
-import se.matappen.matappen.model.RecipeStep;
+import se.matappen.matappen.model.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,8 +19,9 @@ public class RecipeMapper {
         List<IngredientSectionDto> sections = recipe.getSections().stream()
                 .map(this::toIngredientSectionDto)
                 .collect(Collectors.toList());
+        List<ImagesDto> images = recipe.getImages().stream().map(this::toImagesDto).toList();
 
-        return new RecipeDetailedDto(recipeDto, steps, sections);
+        return new RecipeDetailedDto(recipeDto, steps, sections, images);
     }
 
     public RecipeDto toRecipeDto(Recipe recipe) {
@@ -55,5 +53,9 @@ public class RecipeMapper {
                 ingredient.getUnit(),
                 ingredient.getIngredientOrder(),
                 ingredient.getAmount());
+    }
+
+    public ImagesDto toImagesDto(RecipeImage image) {
+        return new ImagesDto(image.getName(), image.getWidth(), image.getHeight(), image.getOrder());
     }
 }
