@@ -18,6 +18,7 @@
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
+    "@drachbar/image_converter": "^0.1.0",
     "@wasm-tool/wasm-pack-plugin": "^1.7.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

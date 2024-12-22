@@ -11,7 +11,7 @@ export class WasmImageConverterService implements ImageProcessor{
 
   private async ensureWasmLoaded() {
     if (!this.wasmLoaded) {
-      this.wasm = await import('../../../assets/pkg/image_converter.js')
+      this.wasm = await import('@drachbar/image_converter')
       await this.wasm.default();
       this.wasmLoaded = true;
     }
