@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import {CommonModule} from "@angular/common";
 import {FallbackImageConverterService} from "../../services/ImageConverterServices/fallback-image-converter.service";
 

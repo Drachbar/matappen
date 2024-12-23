@@ -10,7 +10,7 @@ import {RouterLink} from "@angular/router";
   imports: [
     FormsModule,
     NgForOf,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './search-recipe.component.html',
   styleUrl: './search-recipe.component.scss'
