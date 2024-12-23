@@ -5,6 +5,7 @@ import se.matappen.matappen.dto.*;
 import se.matappen.matappen.model.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -25,11 +26,17 @@ public class RecipeMapper {
     }
 
     public RecipeDto toRecipeDto(Recipe recipe) {
+        Optional<String> imageUrl = recipe.getImages() != null && !recipe.getImages().isEmpty()
+                ? Optional.of(recipe.getImages().getFirst().getName())
+                : Optional.empty();
+
         return new RecipeDto(
                 recipe.getId(),
                 recipe.getNameRecipe(),
                 recipe.getDescription(),
-                recipe.getCreator().getName());
+                recipe.getCreator().getName(),
+                imageUrl
+        );
     }
 
     public RecipeStepDto toRecipeStepDto(RecipeStep step) {

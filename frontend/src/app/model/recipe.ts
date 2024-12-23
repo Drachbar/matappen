@@ -3,4 +3,5 @@ export type recipeSummary = {
   creatorName: string;
   description: string;
   nameRecipe: string;
+  imageUrl: string | null;
 }[]

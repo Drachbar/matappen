@@ -1,5 +1,8 @@
 @for (recipe of recipes; track recipe.id) {
   <div>
+    @if (recipe.imageUrl) {
+      <img src="/images/{{recipe.imageUrl}}" alt="bild">
+    }
     <h2><a [routerLink]="['/recipe/show-recipe', recipe.id]">{{ recipe.nameRecipe }}</a></h2>
     <p>{{ recipe.description }}</p>
   </div>
