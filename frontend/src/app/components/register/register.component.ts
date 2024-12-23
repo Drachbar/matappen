@@ -3,14 +3,13 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { HttpClient } from "@angular/common/http";
 
 @Component({
-  selector: 'app-register',
-  standalone: true,
+    selector: 'app-register',
     imports: [
         FormsModule,
         ReactiveFormsModule
     ],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+    templateUrl: './register.component.html',
+    styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
   formRegisterUser = {

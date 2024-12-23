@@ -3,14 +3,13 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { HttpClient } from "@angular/common/http";
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
+    selector: 'app-login',
     imports: [
         FormsModule,
         ReactiveFormsModule
     ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.scss'
 })
 export class LoginComponent {
 

@@ -5,15 +5,14 @@ import {CommonModule} from "@angular/common";
 import {FallbackImageConverterService} from "../../services/ImageConverterServices/fallback-image-converter.service";
 
 @Component({
-  selector: 'app-create-recipe',
-  standalone: true,
-  imports: [
-    FormsModule,
-    CommonModule,
-    ReactiveFormsModule,
-  ],
-  templateUrl: './create-recipe.component.html',
-  styleUrl: './create-recipe.component.scss'
+    selector: 'app-create-recipe',
+    imports: [
+        FormsModule,
+        CommonModule,
+        ReactiveFormsModule,
+    ],
+    templateUrl: './create-recipe.component.html',
+    styleUrl: './create-recipe.component.scss'
 })
 export class CreateRecipeComponent {
 

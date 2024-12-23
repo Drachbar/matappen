@@ -4,14 +4,13 @@ import { HttpClient } from "@angular/common/http";
 import {NgForOf, NgIf} from "@angular/common";
 
 @Component({
-  selector: 'app-recipe',
-  standalone: true,
-  imports: [
-    NgIf,
-    NgForOf
-  ],
-  templateUrl: './recipe.component.html',
-  styleUrl: './recipe.component.scss'
+    selector: 'app-recipe',
+    imports: [
+        NgIf,
+        NgForOf
+    ],
+    templateUrl: './recipe.component.html',
+    styleUrl: './recipe.component.scss'
 })
 export class RecipeComponent implements OnInit {
   recipe: any = null;

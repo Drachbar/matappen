@@ -3,13 +3,12 @@ import { FormsModule } from "@angular/forms";
 import {FallbackImageConverterService} from "../../services/ImageConverterServices/fallback-image-converter.service";
 
 @Component({
-  selector: 'app-upload-images',
-  standalone: true,
-  imports: [
-    FormsModule
-  ],
-  templateUrl: './upload-images.component.html',
-  styleUrl: './upload-images.component.scss'
+    selector: 'app-upload-images',
+    imports: [
+        FormsModule
+    ],
+    templateUrl: './upload-images.component.html',
+    styleUrl: './upload-images.component.scss'
 })
 export class UploadImagesComponent {
 

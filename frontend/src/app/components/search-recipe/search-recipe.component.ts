@@ -5,15 +5,14 @@ import {NgForOf} from "@angular/common";
 import {RouterLink} from "@angular/router";
 
 @Component({
-  selector: 'app-search-recipe',
-  standalone: true,
-  imports: [
-    FormsModule,
-    NgForOf,
-    RouterLink,
-  ],
-  templateUrl: './search-recipe.component.html',
-  styleUrl: './search-recipe.component.scss'
+    selector: 'app-search-recipe',
+    imports: [
+        FormsModule,
+        NgForOf,
+        RouterLink,
+    ],
+    templateUrl: './search-recipe.component.html',
+    styleUrl: './search-recipe.component.scss'
 })
 export class SearchRecipeComponent {
   recipes: any = [];

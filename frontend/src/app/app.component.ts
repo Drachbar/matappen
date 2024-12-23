@@ -5,11 +5,10 @@ import {HttpClient} from "@angular/common/http";
 import {UpperCasePipe} from "@angular/common";
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, FormsModule, RouterLink, UpperCasePipe],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+    selector: 'app-root',
+    imports: [RouterOutlet, FormsModule, RouterLink, UpperCasePipe],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'Mattias matblogg';
