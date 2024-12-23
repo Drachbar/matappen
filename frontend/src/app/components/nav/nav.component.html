@@ -1,0 +1,19 @@
+<nav>
+  <ul>
+    <li *ngIf="!authState.isLoggedIn()">
+      <a routerLink="/register" routerLinkActive="active">Skapa konto</a>
+    </li>
+    <li *ngIf="!authState.isLoggedIn()">
+      <a routerLink="/login" routerLinkActive="active">Logga in</a>
+    </li>
+    <li *ngIf="authState.isLoggedIn()">
+      <a routerLink="/recipe/create-recipe" routerLinkActive="active">Skapa recept</a>
+    </li>
+    <li>
+      <a routerLink="/recipe/search-recipe" routerLinkActive="active">Sök efter recept</a>
+    </li>
+    <li *ngIf="authState.isLoggedIn()">
+      <a routerLink="/account" routerLinkActive="active">Mitt konto</a>
+    </li>
+  </ul>
+</nav>

@@ -1,25 +1,5 @@
 <h1>{{title | uppercase}}</h1>
 
-<a routerLink="/register">Skapa konto</a>
-<br>
-<a routerLink="/login">Logga in</a>
-<br>
-<a routerLink="/recipe/create-recipe">Skapa recept</a>
-<br>
-<a routerLink="/recipe/search-recipe">Sök efter recept</a>
-<br>
-<br>
-
-<form (ngSubmit)="getUserByEmail()">
-  <input type="email" name="email" [(ngModel)]="formGetUser.email" required>
-  <button type="submit">Skicka</button>
-</form>
-<br>
-<br>
-
-<button (click)="testAuth()">Testa autentisering</button>
-
-<br>
-<br>
+<app-nav></app-nav>
 
 <router-outlet></router-outlet>
