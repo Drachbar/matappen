@@ -91,6 +91,14 @@ public class RecepieController {
         return ResponseEntity.ok(recipeDtos);
     }
 
+    @GetMapping("/getAllRecipes")
+    public ResponseEntity<List<RecipeDto>> getRecipesByName() {
+        List<Recipe> recipes = recipeRepository.findAll();
+        List<RecipeDto> recipeDtos = recipes.stream()
+                .map(recipeMapper::toRecipeDto).toList();
+        return ResponseEntity.ok(recipeDtos);
+    }
+
     @GetMapping("/getRecipeById")
     public ResponseEntity<RecipeDetailedDto> getRecipeById(@RequestParam final int id) {
         return recipeRepository.findById(id)

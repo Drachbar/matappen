@@ -1,30 +1,28 @@
-import {Component} from '@angular/core';
-import {FormsModule} from "@angular/forms";
+import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {recipeSummary} from "../../model/recipe";
 import {RecipeListComponent} from "../recipe-list/recipe-list.component";
 
 @Component({
-    selector: 'app-search-recipe',
+  selector: 'app-all-recipes',
   imports: [
-    FormsModule,
-    RecipeListComponent,
+    RecipeListComponent
   ],
-    templateUrl: './search-recipe.component.html',
-    styleUrl: './search-recipe.component.scss'
+  templateUrl: './all-recipes.component.html',
+  styleUrl: './all-recipes.component.scss'
 })
-export class SearchRecipeComponent {
+export class AllRecipesComponent implements OnInit {
   recipes: recipeSummary = [];
-
-  formGetRecipe = {
-    name: '',
-  };
 
   constructor(private http: HttpClient) {
   }
 
-  getRecipesByName() {
-    this.http.get<recipeSummary>(`/api/v1/recipe/getRecipes?name=${this.formGetRecipe.name}`).subscribe({
+  ngOnInit(): void {
+    this.getRecipes()
+  }
+
+  getRecipes() {
+    this.http.get<recipeSummary>(`/api/v1/recipe/getAllRecipes`).subscribe({
       next: (response) => {
         this.recipes = response
         console.log('Data skickades!', response)
