@@ -9,6 +9,9 @@
     <li *ngIf="authState.isLoggedIn()">
       <a routerLink="/recipe/create-recipe" routerLinkActive="active">Skapa recept</a>
     </li>
+    <li *ngIf="authState.isLoggedIn()">
+      <a routerLink="/recipe/my-recipes" routerLinkActive="active">Visa mina recept</a>
+    </li>
     <li>
       <a routerLink="/recipe/all-recipes" routerLinkActive="active">Visa alla recept</a>
     </li>

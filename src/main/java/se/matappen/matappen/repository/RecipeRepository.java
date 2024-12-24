@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
     List<Recipe> findByNameRecipeContaining(String name);
+    List<Recipe> findByCreatorId(Integer creatorId);
 }

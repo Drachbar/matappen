@@ -91,6 +91,17 @@ public class RecepieController {
         return ResponseEntity.ok(recipeDtos);
     }
 
+    @GetMapping("/getMyRecipes")
+    public ResponseEntity<List<RecipeDto>> getMyRecipes() {
+        final Authentication autentication = SecurityContextHolder.getContext().getAuthentication();
+        final String email = autentication.getName();
+        final Integer id = userRepository.findByEmail(email).getId();
+        List<Recipe> recipes = recipeRepository.findByCreatorId(id);
+        List<RecipeDto> recipeDtos = recipes.stream()
+                .map(recipeMapper::toRecipeDto).toList();
+        return ResponseEntity.ok(recipeDtos);
+    }
+
     @GetMapping("/getAllRecipes")
     public ResponseEntity<List<RecipeDto>> getRecipesByName() {
         List<Recipe> recipes = recipeRepository.findAll();
