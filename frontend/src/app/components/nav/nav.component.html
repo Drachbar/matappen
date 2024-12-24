@@ -15,10 +15,11 @@
     <li>
       <a routerLink="/recipe/all-recipes" routerLinkActive="active">Visa alla recept</a>
     </li>
-    <li>
-      <a routerLink="/recipe/search-recipe" routerLinkActive="active">Sök efter recept</a>
-    </li>
     <li *ngIf="authState.isLoggedIn()">
       <a routerLink="/account" routerLinkActive="active">Mitt konto</a>
+    </li>
+    <li>
+      <input type="text" [(ngModel)]="searchQuery" (keydown.enter)="performSearch()" placeholder="Sök efter recept..."/>
+    </li>
   </ul>
 </nav>
