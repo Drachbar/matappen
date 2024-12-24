@@ -1,5 +1,5 @@
 <nav>
-  <ul>
+  <ul class="d-flex flex-column flex-md-row text-uppercase list-unstyled">
     <li *ngIf="!authState.isLoggedIn()">
       <a routerLink="/register" routerLinkActive="active">Skapa konto</a>
     </li>
@@ -20,6 +20,5 @@
     </li>
     <li *ngIf="authState.isLoggedIn()">
       <a routerLink="/account" routerLinkActive="active">Mitt konto</a>
-    </li>
   </ul>
 </nav>
