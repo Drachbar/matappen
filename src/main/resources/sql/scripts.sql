@@ -30,7 +30,7 @@ CREATE TABLE `recipe`
     PRIMARY KEY (`recipe_id`),
     UNIQUE KEY `recepie_id_UNIQUE` (`recipe_id`),
     KEY             `creator_id` (`fk_creator_id`),
-    CONSTRAINT `creator_id` FOREIGN KEY (`fk_creator_id`) REFERENCES `user` (`user_id`)
+    CONSTRAINT `creator_id` FOREIGN KEY (`fk_creator_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE;
 )
 
 CREATE TABLE `recipe_step`
@@ -41,7 +41,7 @@ CREATE TABLE `recipe_step`
     `step_order`     int           NOT NULL,
     PRIMARY KEY (`recipe_step_id`),
     KEY              `step-recipe` (`fk_recipe_id`),
-    CONSTRAINT `fk_recipe_step_recipe` FOREIGN KEY (`fk_recipe_id`) REFERENCES `recipe` (`recipe_id`)
+    CONSTRAINT `fk_recipe_step_recipe` FOREIGN KEY (`fk_recipe_id`) REFERENCES `recipe` (`recipe_id`) ON DELETE CASCADE;
 );
 
 CREATE TABLE `ingredient_section`
@@ -52,7 +52,7 @@ CREATE TABLE `ingredient_section`
     `section_order`         int          NOT NULL,
     PRIMARY KEY (`ingredient_section_id`),
     KEY                     `recipe-ingredient_section` (`fk_recipe_id`),
-    CONSTRAINT `recipe-ingredient_section` FOREIGN KEY (`fk_recipe_id`) REFERENCES `recipe` (`recipe_id`)
+    CONSTRAINT `recipe-ingredient_section` FOREIGN KEY (`fk_recipe_id`) REFERENCES `recipe` (`recipe_id`) ON DELETE CASCADE;
 );
 
 CREATE TABLE `ingredient`
@@ -65,7 +65,7 @@ CREATE TABLE `ingredient`
     `amount`           decimal(6, 2) DEFAULT NULL,
     PRIMARY KEY (`ingredient_id`),
     KEY                `ingredient-ingredient_section_id` (`fk_section_id`),
-    CONSTRAINT `ingredient-ingredient_section` FOREIGN KEY (`fk_section_id`) REFERENCES `ingredient_section` (`ingredient_section_id`)
+    CONSTRAINT `ingredient-ingredient_section` FOREIGN KEY (`fk_section_id`) REFERENCES `ingredient_section` (`ingredient_section_id`) ON DELETE CASCADE;
 );
 
 CREATE TABLE `recipe_images`
@@ -75,7 +75,8 @@ CREATE TABLE `recipe_images`
     `image_order`   int          NOT NULL,
     `name`          varchar(200) NOT NULL,
     `width`         int          NOT NULL,
+    `height`         int          NOT NULL,
     PRIMARY KEY (`image_id`),
     UNIQUE KEY `unique_recipe_image` (`recipe_id`, `order`, `width`),
-    CONSTRAINT `fk_recipe_images_recipe` FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`recipe_id`)
+    CONSTRAINT `fk_recipe_images_recipe` FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`recipe_id`) ON DELETE CASCADE;
 );
