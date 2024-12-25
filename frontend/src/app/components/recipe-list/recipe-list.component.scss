@@ -1,4 +1,21 @@
 img {
-  max-width: 400px;
   max-height: 400px;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+}
+
+ul {
+  grid-template-columns: repeat(1, 1fr);
+}
+
+li {
+  background-color: var(--secondaryBackground);
+  grid-template-rows: auto auto 1fr;
+}
+
+@media (min-width: 667px) {
+  ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

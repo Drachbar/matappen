@@ -5,16 +5,17 @@
     <input type="text" id="recipe-name" name="name" [(ngModel)]="recipeData.nameRecipe" required>
 
     <label for="recipe-description">Beskrivning:</label>
-    <input type="text" id="recipe-description" name="description" [(ngModel)]="recipeData.description" required>
+    <textarea id="recipe-description" name="description" [(ngModel)]="recipeData.description" required>
+    </textarea>
   </fieldset>
 
   <fieldset>
     <legend>Steg</legend>
     <div class="step-section" *ngFor="let step of recipeData.steps; let i = index">
       <label for="description{{i}}">Stegbeskrivning:</label>
-      <input type="text" [(ngModel)]="step.description" id="description{{i}}" name="description{{i}}"
+      <textarea type="text" [(ngModel)]="step.description" id="description{{i}}" name="description{{i}}"
              placeholder="Stegbeskrivning" required>
-
+      </textarea>
       <label for="order{{i}}">Stegordning:</label>
       <input type="number" [(ngModel)]="step.stepOrder" id="order{{i}}" name="order{{i}}" placeholder="Stegordning"
              required>
