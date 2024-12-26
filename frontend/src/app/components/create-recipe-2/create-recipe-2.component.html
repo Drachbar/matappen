@@ -1,0 +1,23 @@
+<form [formGroup]="recipeForm" (ngSubmit)="createRecipe()" enctype="multipart/form-data">
+  <fieldset class="card m-3 p-3 border-0 shadow-sm">
+    <legend>Översikt</legend>
+    <label for="recipe-name">Namn på recept:</label>
+    <input id="recipe-name" [formControl]="recipeName">
+    <label for="recipe-description">Beskrivning:</label>
+    <textarea id="recipe-description" [formControl]="recipeDescription" required></textarea>
+  </fieldset>
+
+  <fieldset formArrayName="steps" class="card m-3 p-3 border-0 shadow-sm">
+    <legend>Steg</legend>
+    @for (step of ingredientSteps.controls; track step; let i = $index) {
+      <label for="step-description-{{i}}">Beskrivning</label>
+      <input id="step-description-{{i}}" [formControlName]="i">
+    }
+    <button type="button" (click)="addStep()">Lägg till steg</button>
+  </fieldset>
+
+  <button type="submit">
+    <!--          [disabled]="recipeForm.invalid">-->
+    Skapa recept
+  </button>
+</form>
