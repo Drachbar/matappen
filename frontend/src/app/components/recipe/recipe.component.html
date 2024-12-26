@@ -12,10 +12,10 @@
     </article>
     <section class="m-3">
       <h3 class="my-3"><b>Ingredienser</b></h3>
-      @for (ingredientSection of recipe.ingredientSectionsDto; track ingredientSection.name) {
+      @for (ingredientSection of recipe.ingredientSectionsDto; track ingredientSection.id) {
         <h4>{{ ingredientSection.name }}</h4>
         <ul class="p-0">
-          @for (ingredient of ingredientSection.ingredients; track ingredient) {
+          @for (ingredient of ingredientSection.ingredients; track ingredient.id) {
             <li class="card d-block border-0 my-1 p-2 shadow-sm"><b
               *ngIf="ingredient.amount !== 0">{{ ingredient.amount }}</b> {{ ingredient.unit }} {{ ingredient.name }}
             </li>
@@ -26,7 +26,7 @@
     <section class="m-3">
       <h3>Gör så här</h3>
       <ol class="p-0">
-        @for (step of recipe.recipeStepsDto; track step.descriptions) {
+        @for (step of recipe.recipeStepsDto; track step.id) {
           <li class="card border-0 my-1 p-2 shadow-sm m-3">{{ step.description }}</li>
         }
       </ol>
