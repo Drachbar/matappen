@@ -1,19 +1,35 @@
-<ng-container *ngIf="recipe">
-  @for (image of recipe.imagesDto; track image.name) {
-    <img src="/images/{{image.name}}" alt="bild">
-  }
-  <h2>{{recipe.recipeDto.nameRecipe}}</h2>
-  <p>{{recipe.recipeDto.description}}</p>
-  <p>{{recipe.recipeDto.creatorName}}</p>
-  <h3>Ingredienser</h3>
-  <ng-container *ngFor="let ingredientSection of recipe.ingredientSectionsDto">
-    <h4>{{ingredientSection.name}}</h4>
-    <ng-container *ngFor="let ingredient of ingredientSection.ingredients">
-      <p>{{ingredient.amount}} {{ingredient.unit}} {{ingredient.name}}</p>
-    </ng-container>
-  </ng-container>
-  <h3>Gör så här</h3>
-  <ng-container *ngFor="let step of recipe.recipeStepsDto">
-    <p>{{step.description}}</p>
-  </ng-container>
-</ng-container>
+@if (recipe) {
+  <div class="d-grid">
+    <article class="card m-3 p-3 border-0 shadow-sm">
+      @for (image of recipe.imagesDto; track image.name) {
+        <p class="text-center">
+          <img class="rounded" src="/images/{{image.name}}" alt="bild">
+        </p>
+      }
+      <h2>{{ recipe.recipeDto.nameRecipe }}</h2>
+      <p>{{ recipe.recipeDto.description }}</p>
+      <p>Skapad av {{ recipe.recipeDto.creatorName }}</p>
+    </article>
+    <section class="m-3">
+      <h3 class="my-3"><b>Ingredienser</b></h3>
+      @for (ingredientSection of recipe.ingredientSectionsDto; track ingredientSection.name) {
+        <h4>{{ ingredientSection.name }}</h4>
+        <ul class="p-0">
+          @for (ingredient of ingredientSection.ingredients; track ingredient) {
+            <li class="card d-block border-0 my-1 p-2 shadow-sm"><b
+              *ngIf="ingredient.amount !== 0">{{ ingredient.amount }}</b> {{ ingredient.unit }} {{ ingredient.name }}
+            </li>
+          }
+        </ul>
+      }
+    </section>
+    <section class="m-3">
+      <h3>Gör så här</h3>
+      <ol class="p-0">
+        @for (step of recipe.recipeStepsDto; track step.descriptions) {
+          <li class="card border-0 my-1 p-2 shadow-sm m-3">{{ step.description }}</li>
+        }
+      </ol>
+    </section>
+  </div>
+}

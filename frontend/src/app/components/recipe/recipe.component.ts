@@ -1,14 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import { HttpClient } from "@angular/common/http";
-import {NgForOf, NgIf} from "@angular/common";
+import {HttpClient} from "@angular/common/http";
+import {NgIf} from "@angular/common";
 
 @Component({
     selector: 'app-recipe',
-    imports: [
-        NgIf,
-        NgForOf
-    ],
+  imports: [
+    NgIf
+  ],
     templateUrl: './recipe.component.html',
     styleUrl: './recipe.component.scss'
 })

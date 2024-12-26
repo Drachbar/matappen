@@ -2,7 +2,7 @@
   @for (recipe of recipes; track recipe.id) {
     <li class="d-grid card border-0 p-3 shadow-sm">
       @if (recipe.imageUrl) {
-        <p class="text-center"><img src="/images/{{recipe.imageUrl}}" alt="bild"></p>
+        <p class="text-center"><img class="rounded" src="/images/{{recipe.imageUrl}}" alt="bild"></p>
       }
       <h2><a [routerLink]="['/recipe/show-recipe', recipe.id]">{{ recipe.nameRecipe }}</a></h2>
       <p>{{ recipe.description }}</p>
