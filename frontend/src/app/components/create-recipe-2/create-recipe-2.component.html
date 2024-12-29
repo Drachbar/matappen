@@ -7,16 +7,7 @@
     <textarea id="recipe-description" [formControl]="recipeDescription" required></textarea>
   </fieldset>
 
-  <fieldset formArrayName="steps" class="card m-3 p-3 border-0 shadow-sm">
-    <legend>Steg</legend>
-    @for (step of recipeSteps.controls; track step; let i = $index) {
-      <label for="step-description-{{i}}">Beskrivning</label>
-      <input id="step-description-{{i}}" [formControlName]="i">
-    }
-    <button type="button" (click)="addStep()">Lägg till steg</button>
-  </fieldset>
-
-  <fieldset formArrayName="ingredientSections">
+  <fieldset formArrayName="ingredientSections" class="card m-3 p-3 border-0 shadow-sm">
     <legend>Recept</legend>
     @for (ingredientSection of ingredientSections.controls; track ingredientSection; let i = $index) {
       <fieldset [formGroupName]="i">
@@ -44,6 +35,15 @@
       </fieldset>
     }
     <button type="button" (click)="addSection()">Lägg till ingredientgrupp</button>
+  </fieldset>
+
+  <fieldset formArrayName="steps" class="card m-3 p-3 border-0 shadow-sm">
+    <legend>Steg</legend>
+    @for (step of recipeSteps.controls; track step; let i = $index) {
+      <label for="step-description-{{i}}">Beskrivning</label>
+      <input id="step-description-{{i}}" [formControlName]="i">
+    }
+    <button type="button" (click)="addStep()">Lägg till steg</button>
   </fieldset>
 
   <button type="submit">
