@@ -9,11 +9,41 @@
 
   <fieldset formArrayName="steps" class="card m-3 p-3 border-0 shadow-sm">
     <legend>Steg</legend>
-    @for (step of ingredientSteps.controls; track step; let i = $index) {
+    @for (step of recipeSteps.controls; track step; let i = $index) {
       <label for="step-description-{{i}}">Beskrivning</label>
       <input id="step-description-{{i}}" [formControlName]="i">
     }
     <button type="button" (click)="addStep()">Lägg till steg</button>
+  </fieldset>
+
+  <fieldset formArrayName="ingredientSections">
+    <legend>Recept</legend>
+    @for (ingredientSection of ingredientSections.controls; track ingredientSection; let i = $index) {
+      <fieldset [formGroupName]="i">
+        <legend>Ingrediensgrupp {{ i + 1 }}</legend>
+        <label for="section-name-{{ i }}">Namn:</label>
+        <input id="section-name-{{ i }}" formControlName="name">
+        <fieldset formArrayName="ingredients">
+          <legend>Ingredienser</legend>
+          @for (ingredient of getIngredients(i).controls; track ingredient; let j = $index) {
+            <div [formGroupName]="j">
+              <label for="ingredient-name-{{ i }}-{{ j }}">Namn:</label>
+              <input id="ingredient-name-{{ i }}-{{ j }}" formControlName="name">
+
+              <label for="ingredient-unit-{{ i }}-{{ j }}">Enhet:</label>
+              <input id="ingredient-unit-{{ i }}-{{ j }}" formControlName="unit">
+
+              <label for="ingredient-amount-{{ i }}-{{ j }}">Mängd:</label>
+              <input id="ingredient-amount-{{ i }}-{{ j }}" formControlName="amount">
+
+              <button type="button" (click)="removeIngredient(i, j)">Ta bort ingrediens</button>
+            </div>
+          }
+          <button type="button" (click)="addIngredient(i)">Lägg till ingrediens</button>
+        </fieldset>
+      </fieldset>
+    }
+    <button type="button" (click)="addSection()">Lägg till ingredientgrupp</button>
   </fieldset>
 
   <button type="submit">

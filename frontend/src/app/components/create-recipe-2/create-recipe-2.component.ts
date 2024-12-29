@@ -14,19 +14,19 @@ export class CreateRecipe2Component implements OnInit {
   recipeName: FormControl = new FormControl('', Validators.required)
   recipeDescription: FormControl = new FormControl('', Validators.required)
   ingredientSections!: FormArray;
-  ingredientSteps!: FormArray;
+  recipeSteps!: FormArray;
 
   constructor(private fb: FormBuilder) {  }
 
   ngOnInit() {
     this.ingredientSections = this.fb.array([]);
-    this.ingredientSteps = this.fb.array([]);
+    this.recipeSteps = this.fb.array([]);
 
     this.recipeForm = this.fb.group({
       recipeName: this.recipeName,
       description: this.recipeDescription,
       ingredientSections: this.ingredientSections,
-      steps: this.ingredientSteps
+      steps: this.recipeSteps
     })
     this.addSection(); // Start med en sektion
     this.addStep();
@@ -53,7 +53,7 @@ export class CreateRecipe2Component implements OnInit {
   }
 
   addStep(): void {
-    this.ingredientSteps.push(
+    this.recipeSteps.push(
       new FormControl('', Validators.required)
     );
   }
@@ -68,12 +68,14 @@ export class CreateRecipe2Component implements OnInit {
   }
 
   removeStep(index: number): void {
-    this.ingredientSteps.removeAt(index);
+    this.recipeSteps.removeAt(index);
   }
 
   createRecipe() {
     console.log(this.recipeForm.value)
   }
 
-  protected readonly FormControl = FormControl;
+  getIngredients(sectionIndex: number): FormArray {
+    return this.ingredientSections.at(sectionIndex).get('ingredients') as FormArray;
+  }
 }
