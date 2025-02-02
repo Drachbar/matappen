@@ -28,12 +28,17 @@
               <input id="ingredient-amount-{{ i }}-{{ j }}" formControlName="amount">
 
               <button type="button" class="btn btn-primary" (click)="removeIngredient(i, j)">Ta bort ingrediens</button>
+              <button type="button" class="btn btn-secondary" (click)="moveIngredientUp(i, j)" [disabled]="j === 0">Flytta upp ingrediens</button>
+              <button type="button" class="btn btn-secondary" (click)="moveIngredientDown(i, j)" [disabled]="j === getIngredients(i).length - 1">Flytta ned ingrediens</button>
+              <!-- ... existing code ... -->
             </div>
           }
           <button type="button" class="btn btn-primary" (click)="addIngredient(i)">Lägg till ingrediens</button>
         </fieldset>
+        <button type="button" class="btn btn-secondary" (click)="moveSectionUp(i)" [disabled]="i === 0">Flytta upp</button>
+        <button type="button" class="btn btn-secondary" (click)="moveSectionDown(i)" [disabled]="i === ingredientSections.length - 1">Flytta ner</button>
         <button type="button" class="btn btn-primary" (click)="removeSection(i)">Ta bort ingrediensgrupp</button>
-      </fieldset>
+  </fieldset>
     }
     <button type="button" class="btn btn-primary" (click)="addSection()">Lägg till ingredientgrupp</button>
   </fieldset>
@@ -44,7 +49,9 @@
       <div>
         <label for="step-description-{{i}}">Steg {{ i + 1 }}</label>
         <input id="step-description-{{i}}" [formControlName]="i">
-        <button type="button" class="btn btn-primary" (click)=removeStep(i)>Ta bort steg</button>
+        <button type="button" class="btn btn-primary" (click)="removeStep(i)">Ta bort steg</button>
+        <button type="button" class="btn btn-secondary" (click)="moveStepUp(i)" [disabled]="i === 0">Flytta upp</button>
+        <button type="button" class="btn btn-secondary" (click)="moveStepDown(i)" [disabled]="i === recipeSteps.length - 1">Flytta ner</button>
       </div>
     }
     <button type="button" class="btn btn-primary" (click)="addStep()">Lägg till steg</button>

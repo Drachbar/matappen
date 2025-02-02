@@ -28,7 +28,7 @@ export class CreateRecipe2Component implements OnInit {
       ingredientSections: this.ingredientSections,
       steps: this.recipeSteps
     })
-    this.addSection(); // Start med en sektion
+    this.addSection();
     this.addStep();
   }
 
@@ -67,8 +67,70 @@ export class CreateRecipe2Component implements OnInit {
     ingredients.removeAt(ingredientIndex);
   }
 
+  moveIngredientUp(sectionIndex: number, ingredientIndex: number): void {
+    const ingredients = this.ingredientSections.at(sectionIndex).get('ingredients') as FormArray;
+    if (ingredientIndex > 0) {
+      const ingredientList = ingredients.value;
+      const temp = ingredientList[ingredientIndex];
+      ingredientList[ingredientIndex] = ingredientList[ingredientIndex - 1];
+      ingredientList[ingredientIndex - 1] = temp;
+      ingredients.setValue(ingredientList);
+    }
+  }
+
+  moveIngredientDown(sectionIndex: number, ingredientIndex: number): void {
+    const ingredients = this.ingredientSections.at(sectionIndex).get('ingredients') as FormArray;
+    if (ingredientIndex < ingredients.length - 1) {
+      const ingredientList = ingredients.value;
+      const temp = ingredientList[ingredientIndex];
+      ingredientList[ingredientIndex] = ingredientList[ingredientIndex + 1];
+      ingredientList[ingredientIndex + 1] = temp;
+      ingredients.setValue(ingredientList);
+    }
+  }
+
   removeStep(index: number): void {
     this.recipeSteps.removeAt(index);
+  }
+
+  moveStepUp(index: number): void {
+    if (index > 0) {
+      const steps = this.recipeSteps.value;
+      const temp = steps[index];
+      steps[index] = steps[index - 1];
+      steps[index - 1] = temp;
+      this.recipeSteps.setValue(steps);
+    }
+  }
+
+  moveStepDown(index: number): void {
+    if (index < this.recipeSteps.length - 1) {
+      const steps = this.recipeSteps.value;
+      const temp = steps[index];
+      steps[index] = steps[index + 1];
+      steps[index + 1] = temp;
+      this.recipeSteps.setValue(steps);
+    }
+  }
+
+  moveSectionUp(index: number): void {
+    if (index > 0) {
+      const sections = this.ingredientSections.value;
+      const temp = sections[index];
+      sections[index] = sections[index - 1];
+      sections[index - 1] = temp;
+      this.ingredientSections.setValue(sections);
+    }
+  }
+
+  moveSectionDown(index: number): void {
+    if (index < this.ingredientSections.length - 1) {
+      const sections = this.ingredientSections.value;
+      const temp = sections[index];
+      sections[index] = sections[index + 1];
+      sections[index + 1] = temp;
+      this.ingredientSections.setValue(sections);
+    }
   }
 
   createRecipe() {
