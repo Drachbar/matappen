@@ -1,15 +1,30 @@
 <form [formGroup]="recipeForm" (ngSubmit)="createRecipe()" enctype="multipart/form-data">
+  <fieldset>
+    <legend>Ladda upp bilder</legend>
+    <input type="file" (change)="onFileSelect($event)" multiple/>
+    @if (uploadedFiles.length) {
+      <div>
+        <p>Uppladdade filer:</p>
+        <ul>
+          @for (file of uploadedFiles; track file) {
+            <li>{{ file.name }}</li>
+          }
+        </ul>
+      </div>
+    }
+  </fieldset>
+
   <fieldset class="card m-3 p-3 border-0 shadow-sm">
     <legend>Översikt</legend>
     <label for="recipe-name">Namn på recept:</label>
-    <input id="recipe-name" [formControl]="recipeName">
+    <input id="recipe-name" [formControl]="nameRecipe">
     <label for="recipe-description">Beskrivning:</label>
     <textarea id="recipe-description" [formControl]="recipeDescription" required></textarea>
   </fieldset>
 
-  <fieldset formArrayName="ingredientSections" class="card m-3 p-3 border-0 shadow-sm">
+  <fieldset formArrayName="sections" class="card m-3 p-3 border-0 shadow-sm">
     <legend>Recept</legend>
-    @for (ingredientSection of ingredientSections.controls; track ingredientSection; let i = $index) {
+    @for (ingredientSection of sections.controls; track ingredientSection; let i = $index) {
       <fieldset [formGroupName]="i">
         <legend>Ingrediensgrupp {{ i + 1 }}</legend>
         <label for="section-name-{{ i }}">Namn:</label>
@@ -36,7 +51,7 @@
           <button type="button" class="btn btn-primary" (click)="addIngredient(i)">Lägg till ingrediens</button>
         </fieldset>
         <button type="button" class="btn btn-secondary" (click)="moveSectionUp(i)" [disabled]="i === 0">Flytta upp</button>
-        <button type="button" class="btn btn-secondary" (click)="moveSectionDown(i)" [disabled]="i === ingredientSections.length - 1">Flytta ner</button>
+        <button type="button" class="btn btn-secondary" (click)="moveSectionDown(i)" [disabled]="i === sections.length - 1">Flytta ner</button>
         <button type="button" class="btn btn-primary" (click)="removeSection(i)">Ta bort ingrediensgrupp</button>
   </fieldset>
     }
@@ -45,13 +60,13 @@
 
   <fieldset formArrayName="steps" class="card m-3 p-3 border-0 shadow-sm">
     <legend>Steg</legend>
-    @for (step of recipeSteps.controls; track step; let i = $index) {
+    @for (step of steps.controls; track step; let i = $index) {
       <div>
         <label for="step-description-{{i}}">Steg {{ i + 1 }}</label>
         <input id="step-description-{{i}}" [formControlName]="i">
         <button type="button" class="btn btn-primary" (click)="removeStep(i)">Ta bort steg</button>
         <button type="button" class="btn btn-secondary" (click)="moveStepUp(i)" [disabled]="i === 0">Flytta upp</button>
-        <button type="button" class="btn btn-secondary" (click)="moveStepDown(i)" [disabled]="i === recipeSteps.length - 1">Flytta ner</button>
+        <button type="button" class="btn btn-secondary" (click)="moveStepDown(i)" [disabled]="i === steps.length - 1">Flytta ner</button>
       </div>
     }
     <button type="button" class="btn btn-primary" (click)="addStep()">Lägg till steg</button>
