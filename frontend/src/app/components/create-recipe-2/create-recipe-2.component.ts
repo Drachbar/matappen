@@ -18,6 +18,7 @@ export class CreateRecipe2Component implements OnInit {
   sections!: FormArray;
   steps!: FormArray;
   uploadedFiles: File[] = [];
+  previewImages: { file: File, url: string }[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -187,17 +188,24 @@ export class CreateRecipe2Component implements OnInit {
     const target = event.target as HTMLInputElement;
     if (target.files) {
       const files = Array.from(target.files);
+      // Töm listorna om du vill
       this.uploadedFiles = [];
-      files.forEach((file) => this.convertAndAddFile(file));
+      this.previewImages = [];
+      files.forEach(file => this.convertAndAddFile(file));
     }
   }
 
   async convertAndAddFile(file: File): Promise<void> {
     try {
-      const convertedFile = await this.imageConverterService.processImage(file, 500, 600, 'webp', 1);
-      if (convertedFile) {
-        const blob = await (await fetch(convertedFile)).blob();
-        this.uploadedFiles.push(new File([blob], `${file.name.split('.')[0]}.webp`, {type: 'image/webp'}));
+      const convertedUrl = await this.imageConverterService.processImage(file, 500, 600, 'webp', 1);
+      if (convertedUrl) {
+        const blob = await (await fetch(convertedUrl)).blob();
+        const newFile = new File([blob], `${file.name.split('.')[0]}.webp`, { type: 'image/webp' });
+        // Lägg till i uploadedFiles
+        this.uploadedFiles.push(newFile);
+        // Skapa preview-URL för att visa bilden
+        const url = URL.createObjectURL(newFile);
+        this.previewImages.push({ file: newFile, url });
       }
     } catch (error) {
       console.error('Kunde inte konvertera bilden:', error);

@@ -12,6 +12,17 @@
         </ul>
       </div>
     }
+    @if (previewImages.length) {
+      <div>
+        <ul>
+          @for (item of previewImages; track item) {
+            <li>
+              <img [src]="item.url" alt="{{ item.file.name }}" />
+            </li>
+          }
+        </ul>
+      </div>
+    }
   </fieldset>
 
   <fieldset class="card m-3 p-3 border-0 shadow-sm">
