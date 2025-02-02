@@ -16,7 +16,8 @@ export class CreateRecipe2Component implements OnInit {
   ingredientSections!: FormArray;
   recipeSteps!: FormArray;
 
-  constructor(private fb: FormBuilder) {  }
+  constructor(private fb: FormBuilder) {
+  }
 
   ngOnInit() {
     this.ingredientSections = this.fb.array([]);
@@ -115,21 +116,23 @@ export class CreateRecipe2Component implements OnInit {
 
   moveSectionUp(index: number): void {
     if (index > 0) {
-      const sections = this.ingredientSections.value;
-      const temp = sections[index];
-      sections[index] = sections[index - 1];
-      sections[index - 1] = temp;
-      this.ingredientSections.setValue(sections);
+      const sections = this.ingredientSections;
+      const currentSection = sections.at(index);
+      const previousSection = sections.at(index - 1);
+
+      sections.setControl(index, previousSection);
+      sections.setControl(index - 1, currentSection);
     }
   }
 
   moveSectionDown(index: number): void {
     if (index < this.ingredientSections.length - 1) {
-      const sections = this.ingredientSections.value;
-      const temp = sections[index];
-      sections[index] = sections[index + 1];
-      sections[index + 1] = temp;
-      this.ingredientSections.setValue(sections);
+      const sections = this.ingredientSections;
+      const currentSection = sections.at(index);
+      const nextSection = sections.at(index + 1);
+
+      sections.setControl(index, nextSection);
+      sections.setControl(index + 1, currentSection);
     }
   }
 
