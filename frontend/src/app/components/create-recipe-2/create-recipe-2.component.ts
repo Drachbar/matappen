@@ -17,7 +17,6 @@ export class CreateRecipe2Component implements OnInit {
   recipeDescription: FormControl = new FormControl('', Validators.required)
   sections!: FormArray;
   steps!: FormArray;
-  uploadedFiles: File[] = [];
   previewImages: { file: File, url: string }[] = [];
 
   constructor(
@@ -147,11 +146,7 @@ export class CreateRecipe2Component implements OnInit {
   }
 
   createRecipe() {
-    console.log("innan:" + "this.recipeForm.value")
-
-    let recipeToSend = this.recipeForm.value;
-
-    console.log(recipeToSend)
+    const recipeToSend = this.recipeForm.value;
 
     recipeToSend.sections.forEach((section: any, sectionIndex: number) => {
       section.sectionOrder = sectionIndex + 1;
@@ -163,15 +158,10 @@ export class CreateRecipe2Component implements OnInit {
     recipeToSend.steps.forEach((step: any, stepIndex: number) => {
       step.stepOrder = stepIndex + 1;
     })
-
-    console.log(recipeToSend.sections)
-
     const formData = new FormData();
     formData.append('recipe', JSON.stringify(this.recipeForm.value));
 
-    console.log(formData.get('recipe'))
-
-    this.uploadedFiles.forEach((file) => formData.append('images', file));
+    this.previewImages.forEach(item => formData.append('images', item.file));
 
     this.http.post('api/v1/recipe/add', formData).subscribe({
       next: () => console.log('Receptet skapades!'),
@@ -188,8 +178,6 @@ export class CreateRecipe2Component implements OnInit {
     const target = event.target as HTMLInputElement;
     if (target.files) {
       const files = Array.from(target.files);
-      // Töm listorna om du vill
-      this.uploadedFiles = [];
       this.previewImages = [];
       files.forEach(file => this.convertAndAddFile(file));
     }
@@ -201,9 +189,6 @@ export class CreateRecipe2Component implements OnInit {
       if (convertedUrl) {
         const blob = await (await fetch(convertedUrl)).blob();
         const newFile = new File([blob], `${file.name.split('.')[0]}.webp`, { type: 'image/webp' });
-        // Lägg till i uploadedFiles
-        this.uploadedFiles.push(newFile);
-        // Skapa preview-URL för att visa bilden
         const url = URL.createObjectURL(newFile);
         this.previewImages.push({ file: newFile, url });
       }

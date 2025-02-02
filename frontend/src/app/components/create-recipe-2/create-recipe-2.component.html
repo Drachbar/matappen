@@ -2,16 +2,6 @@
   <fieldset>
     <legend>Ladda upp bilder</legend>
     <input type="file" (change)="onFileSelect($event)" multiple/>
-    @if (uploadedFiles.length) {
-      <div>
-        <p>Uppladdade filer:</p>
-        <ul>
-          @for (file of uploadedFiles; track file) {
-            <li>{{ file.name }}</li>
-          }
-        </ul>
-      </div>
-    }
     @if (previewImages.length) {
       <div>
         <ul>
@@ -74,7 +64,7 @@
     @for (step of steps.controls; track step; let i = $index) {
       <div [formGroupName]="i">
         <label for="step-description-{{ i }}">Steg {{ i + 1 }}</label>
-        <input id="step-description-{{ i }}" formControlName="description">
+        <textarea id="step-description-{{ i }}" formControlName="description" class="w-100"></textarea>
         <button type="button" class="btn btn-primary" (click)="removeStep(i)">Ta bort steg</button>
         <button type="button" class="btn btn-secondary" (click)="moveStepUp(i)" [disabled]="i === 0">Flytta upp</button>
         <button type="button" class="btn btn-secondary" (click)="moveStepDown(i)" [disabled]="i === steps.length - 1">Flytta ner</button>
