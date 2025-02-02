@@ -196,4 +196,8 @@ export class CreateRecipe2Component implements OnInit {
       console.error('Kunde inte konvertera bilden:', error);
     }
   }
+
+  removeImage(index: number) {
+    this.previewImages.splice(index, 1);
+  }
 }

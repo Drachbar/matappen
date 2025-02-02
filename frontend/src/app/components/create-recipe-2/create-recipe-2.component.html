@@ -1,13 +1,20 @@
 <form [formGroup]="recipeForm" (ngSubmit)="createRecipe()" enctype="multipart/form-data">
-  <fieldset>
+  <fieldset class="card m-3 p-3 border-0 shadow-sm">
     <legend>Ladda upp bilder</legend>
-    <input type="file" (change)="onFileSelect($event)" multiple/>
-    @if (previewImages.length) {
+    <div>
+      <input type="file" #fileInput class="d-none" (change)="onFileSelect($event)" multiple>
+      <button type="button" class="btn btn-secondary" (click)="fileInput.click()">Välj filer</button>
+      @if (!!previewImages.length) {
+        <span class="ms-3">{{ previewImages.length + 1 }} filer valda</span>
+      }
+    </div>
+    @if (!!previewImages.length) {
       <div>
         <ul>
-          @for (item of previewImages; track item) {
-            <li>
-              <img [src]="item.url" alt="{{ item.file.name }}" />
+          @for (item of previewImages; track item; let index = $index) {
+            <li class="list-unstyled m-4">
+              <img [src]="item.url" alt="{{ item.file.name }}"/>
+              <button type="button" class="btn btn-danger ms-3" (click)="removeImage(index)">Ta bort bild</button>
             </li>
           }
         </ul>
@@ -44,17 +51,24 @@
               <input id="ingredient-amount-{{ i }}-{{ j }}" formControlName="amount">
 
               <button type="button" class="btn btn-primary" (click)="removeIngredient(i, j)">Ta bort ingrediens</button>
-              <button type="button" class="btn btn-secondary" (click)="moveIngredientUp(i, j)" [disabled]="j === 0">Flytta upp ingrediens</button>
-              <button type="button" class="btn btn-secondary" (click)="moveIngredientDown(i, j)" [disabled]="j === getIngredients(i).length - 1">Flytta ned ingrediens</button>
+              <button type="button" class="btn btn-secondary" (click)="moveIngredientUp(i, j)" [disabled]="j === 0">
+                Flytta upp ingrediens
+              </button>
+              <button type="button" class="btn btn-secondary" (click)="moveIngredientDown(i, j)"
+                      [disabled]="j === getIngredients(i).length - 1">Flytta ned ingrediens
+              </button>
               <!-- ... existing code ... -->
             </div>
           }
           <button type="button" class="btn btn-primary" (click)="addIngredient(i)">Lägg till ingrediens</button>
         </fieldset>
-        <button type="button" class="btn btn-secondary" (click)="moveSectionUp(i)" [disabled]="i === 0">Flytta upp</button>
-        <button type="button" class="btn btn-secondary" (click)="moveSectionDown(i)" [disabled]="i === sections.length - 1">Flytta ner</button>
+        <button type="button" class="btn btn-secondary" (click)="moveSectionUp(i)" [disabled]="i === 0">Flytta upp
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="moveSectionDown(i)"
+                [disabled]="i === sections.length - 1">Flytta ner
+        </button>
         <button type="button" class="btn btn-primary" (click)="removeSection(i)">Ta bort ingrediensgrupp</button>
-  </fieldset>
+      </fieldset>
     }
     <button type="button" class="btn btn-primary" (click)="addSection()">Lägg till ingredientgrupp</button>
   </fieldset>
@@ -67,7 +81,9 @@
         <textarea id="step-description-{{ i }}" formControlName="description" class="w-100"></textarea>
         <button type="button" class="btn btn-primary" (click)="removeStep(i)">Ta bort steg</button>
         <button type="button" class="btn btn-secondary" (click)="moveStepUp(i)" [disabled]="i === 0">Flytta upp</button>
-        <button type="button" class="btn btn-secondary" (click)="moveStepDown(i)" [disabled]="i === steps.length - 1">Flytta ner</button>
+        <button type="button" class="btn btn-secondary" (click)="moveStepDown(i)" [disabled]="i === steps.length - 1">
+          Flytta ner
+        </button>
       </div>
     }
     <button type="button" class="btn btn-primary" (click)="addStep()">Lägg till steg</button>
