@@ -62,7 +62,9 @@ export class CreateRecipe2Component implements OnInit {
 
   addStep(): void {
     this.steps.push(
-      new FormControl('', Validators.required)
+      new FormGroup({
+        description: new FormControl('', Validators.required)
+      })
     );
   }
 
@@ -157,9 +159,9 @@ export class CreateRecipe2Component implements OnInit {
       })
     })
 
-    // recipeToSend.steps.forEach((step: any, stepIndex: number) => {
-    //   step.stepOrder = stepIndex + 1;
-    // })
+    recipeToSend.steps.forEach((step: any, stepIndex: number) => {
+      step.stepOrder = stepIndex + 1;
+    })
 
     console.log(recipeToSend.sections)
 
