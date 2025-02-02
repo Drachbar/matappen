@@ -27,26 +27,29 @@
               <label for="ingredient-amount-{{ i }}-{{ j }}">Mängd:</label>
               <input id="ingredient-amount-{{ i }}-{{ j }}" formControlName="amount">
 
-              <button type="button" (click)="removeIngredient(i, j)">Ta bort ingrediens</button>
+              <button type="button" class="btn btn-primary" (click)="removeIngredient(i, j)">Ta bort ingrediens</button>
             </div>
           }
-          <button type="button" (click)="addIngredient(i)">Lägg till ingrediens</button>
+          <button type="button" class="btn btn-primary" (click)="addIngredient(i)">Lägg till ingrediens</button>
         </fieldset>
       </fieldset>
     }
-    <button type="button" (click)="addSection()">Lägg till ingredientgrupp</button>
+    <button type="button" class="btn btn-primary" (click)="addSection()">Lägg till ingredientgrupp</button>
   </fieldset>
 
   <fieldset formArrayName="steps" class="card m-3 p-3 border-0 shadow-sm">
     <legend>Steg</legend>
     @for (step of recipeSteps.controls; track step; let i = $index) {
-      <label for="step-description-{{i}}">Beskrivning</label>
-      <input id="step-description-{{i}}" [formControlName]="i">
+      <div>
+        <label for="step-description-{{i}}">Steg {{ i + 1 }}</label>
+        <input id="step-description-{{i}}" [formControlName]="i">
+        <button type="button" class="btn btn-primary" (click)=removeStep(i)>Ta bort steg</button>
+      </div>
     }
-    <button type="button" (click)="addStep()">Lägg till steg</button>
+    <button type="button" class="btn btn-primary" (click)="addStep()">Lägg till steg</button>
   </fieldset>
 
-  <button type="submit">
+  <button type="submit" class="btn btn-primary">
     <!--          [disabled]="recipeForm.invalid">-->
     Skapa recept
   </button>
