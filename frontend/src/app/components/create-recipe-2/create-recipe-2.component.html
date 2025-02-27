@@ -84,85 +84,89 @@
         <legend class="h6">Ingredienser</legend>
         @for (ingredient of getIngredients(i).controls; track ingredient; let j
         = $index) {
-        <div [formGroupName]="j">
-          <label for="ingredient-name-{{ i }}-{{ j }}">Namn:</label>
+        <div [formGroupName]="j" class="d-flex align-items-center gap-2 mb-2">
           <input
-            id="ingredient-name-{{ i }}-{{ j }}"
             formControlName="name"
             placeholder="Namn"
-            class="form-control"
+            class="form-control w-25"
           />
-
-          <label for="ingredient-unit-{{ i }}-{{ j }}">Enhet:</label>
           <input
-            id="ingredient-unit-{{ i }}-{{ j }}"
-            formControlName="unit"
-            class="form-control"
-          />
-
-          <label for="ingredient-amount-{{ i }}-{{ j }}">Mängd:</label>
-          <input
-            id="ingredient-amount-{{ i }}-{{ j }}"
             formControlName="amount"
-            class="form-control"
+            placeholder="Mängd"
+            class="form-control w-25"
           />
+          <input
+            formControlName="unit"
+            placeholder="Enhet"
+            class="form-control w-25"
+          />
+
+          <div class="btn-group">
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              (click)="moveIngredientUp(i, j)"
+              [disabled]="j === 0"
+            >
+              ▲
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              (click)="moveIngredientDown(i, j)"
+              [disabled]="j === getIngredients(i).length - 1"
+            >
+              ▼
+            </button>
+          </div>
 
           <button
             type="button"
-            class="btn btn-secondary"
-            (click)="moveIngredientUp(i, j)"
-            [disabled]="j === 0"
-          >
-            ▲
-          </button>
-          <button
-            type="button"
-            class="btn btn-secondary"
-            (click)="moveIngredientDown(i, j)"
-            [disabled]="j === getIngredients(i).length - 1"
-          >
-            ▼</button
-          ><button
-            type="button"
-            class="btn btn-primary"
+            class="btn btn-danger btn-sm"
             (click)="removeIngredient(i, j)"
           >
-            Ta bort ingrediens
+            ✕
           </button>
-          <!-- ... existing code ... -->
         </div>
         }
         <button
           type="button"
-          class="btn btn-primary"
+          class="btn btn-primary btn-sm mt-2"
           (click)="addIngredient(i)"
         >
-          Lägg till ingrediens
+          + Lägg till ingrediens
         </button>
       </fieldset>
-      <button
-        type="button"
-        class="btn btn-secondary"
-        (click)="moveSectionUp(i)"
-        [disabled]="i === 0"
-      >
-        ▲
-      </button>
-      <button
-        type="button"
-        class="btn btn-secondary"
-        (click)="moveSectionDown(i)"
-        [disabled]="i === sections.length - 1"
-      >
-        ▼
-      </button>
-      <button type="button" class="btn btn-primary" (click)="removeSection(i)">
-        Ta bort ingrediensgrupp
-      </button>
+
+      <div class="btn-group mt-3">
+        <button
+          type="button"
+          class="btn btn-secondary btn-sm"
+          (click)="moveSectionUp(i)"
+          [disabled]="i === 0"
+        >
+          ▲
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary btn-sm"
+          (click)="moveSectionDown(i)"
+          [disabled]="i === sections.length - 1"
+        >
+          ▼
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger btn-sm"
+          (click)="removeSection(i)"
+        >
+          Ta bort
+        </button>
+      </div>
     </fieldset>
     }
     <button type="button" class="btn btn-primary" (click)="addSection()">
-      Lägg till ingredientgrupp
+      + Lägg till ingrediensgrupp
     </button>
   </fieldset>
 
@@ -183,7 +187,7 @@
       <div class="btn-group mt-2">
         <button
           type="button"
-          class="btn btn-light"
+          class="btn btn-secondary btn-sm"
           (click)="moveStepUp(i)"
           [disabled]="i === 0"
         >
@@ -191,7 +195,53 @@
         </button>
         <button
           type="button"
-          class="btn btn-light"
+          class="btn btn-secondary btn-sm"
+          (click)="moveStepDown(i)"
+          [disabled]="i === steps.length - 1"
+        >
+          ▼
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger btn-sm"
+          (click)="removeStep(i)"
+        >
+          Ta bort
+        </button>
+      </div>
+    </div>
+    }
+    <button type="button" class="btn btn-outline-dark" (click)="addStep()">
+      + Lägg till steg
+    </button>
+  </fieldset>
+
+  <!-- Steg -->
+  <fieldset formArrayName="steps" class="card p-4 border-0 shadow-sm mb-4">
+    <legend class="h5">Steg</legend>
+    @for (step of steps.controls; track step; let i = $index) {
+    <div [formGroupName]="i" class="mb-3">
+      <label for="step-description-{{ i }}" class="form-label"
+        >Steg {{ i + 1 }}</label
+      >
+      <textarea
+        id="step-description-{{ i }}"
+        formControlName="description"
+        class="form-control"
+      ></textarea>
+
+      <div class="btn-group mt-2">
+        <button
+          type="button"
+          class="btn btn-light btn-sm"
+          (click)="moveStepUp(i)"
+          [disabled]="i === 0"
+        >
+          ▲
+        </button>
+        <button
+          type="button"
+          class="btn btn-light btn-sm"
           (click)="moveStepDown(i)"
           [disabled]="i === steps.length - 1"
         >
