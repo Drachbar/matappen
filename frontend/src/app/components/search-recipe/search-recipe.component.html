@@ -1,8 +1,0 @@
-<form (ngSubmit)="getRecipesByName()">
-  <input type="text" name="name" [(ngModel)]="formGetRecipe.name" required>
-  <button type="submit">Skicka</button>
-</form>
-<div *ngFor="let recipe of recipes">
-  <h2><a [routerLink]="['/recipe/show-recipe', recipe.id]">{{recipe.nameRecipe}}</a></h2>
-  <p>{{recipe.description}}</p>
-</div>

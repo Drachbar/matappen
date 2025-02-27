@@ -1,0 +1,28 @@
+<nav>
+  <ul class="d-flex flex-column flex-md-row text-uppercase list-unstyled">
+    <li *ngIf="!authState.isLoggedIn()">
+      <a routerLink="/register" routerLinkActive="active">Skapa konto</a>
+    </li>
+    <li *ngIf="!authState.isLoggedIn()">
+      <a routerLink="/login" routerLinkActive="active">Logga in</a>
+    </li>
+    <li *ngIf="authState.isLoggedIn()">
+      <a routerLink="/recipe/create-recipe" routerLinkActive="active">Skapa recept</a>
+    </li>
+    <li *ngIf="authState.isLoggedIn()">
+      <a routerLink="/recipe/create-recipe-2" routerLinkActive="active">Skapa recept 2</a>
+    </li>
+    <li *ngIf="authState.isLoggedIn()">
+      <a routerLink="/recipe/my-recipes" routerLinkActive="active">Visa mina recept</a>
+    </li>
+    <li>
+      <a routerLink="/recipe/all-recipes" routerLinkActive="active">Visa alla recept</a>
+    </li>
+    <li *ngIf="authState.isLoggedIn()">
+      <a routerLink="/account" routerLinkActive="active">Mitt konto</a>
+    </li>
+    <li>
+      <input type="text" [(ngModel)]="searchQuery" (keydown.enter)="performSearch()" placeholder="Sök efter recept..."/>
+    </li>
+  </ul>
+</nav>

@@ -1,16 +1,16 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
+import {AuthStateService} from "../../services/auth-state.service";
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
+    selector: 'app-login',
     imports: [
         FormsModule,
         ReactiveFormsModule
     ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.scss'
 })
 export class LoginComponent {
 
@@ -19,7 +19,7 @@ export class LoginComponent {
     password: ''
   };
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private authState: AuthStateService) {
   }
 
   login(loginForm: any) {
@@ -32,7 +32,10 @@ export class LoginComponent {
         withCredentials: true,
         responseType: 'text'
       }).subscribe({
-        next: (response) => console.log('Success:', response),
+        next: (response) => {
+          console.log('Success:', response)
+          this.authState.setLoggedIn(true);
+        },
         error: (error) => console.error('Failure:', error)
       });
     }

@@ -1,0 +1,25 @@
+img {
+  max-height: 400px;
+  max-width: 100%;
+  height: auto;
+  width: auto;
+}
+
+ol {
+  counter-reset: list; /* Initierar räknaren, börjar från 0 (standard) */
+}
+
+ol li {
+  counter-increment: list; /* Ökar räknaren för varje li */
+  position: relative; /* Behövs för att hantera positionen av pseudo-elementet */
+}
+
+ol li:before {
+  color: var(--headerColor);
+  font-weight: bold;
+  content: counter(list); /* Använder räknaren 'list' */
+  left: -34px;
+  position: absolute;
+  text-align: right;
+  width: 26px;
+}

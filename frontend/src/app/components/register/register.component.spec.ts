@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RegisterComponent } from './register.component';
-import {HttpClientTestingModule} from "@angular/common/http/testing";
+import { provideHttpClientTesting } from "@angular/common/http/testing";
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
@@ -9,8 +10,9 @@ describe('RegisterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RegisterComponent, HttpClientTestingModule]
-    })
+    imports: [RegisterComponent],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(RegisterComponent);

@@ -1,5 +1,6 @@
 package se.matappen.matappen.config;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -42,6 +43,14 @@ public class ProjectSecurityConfig {
                         .loginProcessingUrl("/api/v1/login")
                         .successHandler(successHandler)
                         .failureHandler(failureHandler)
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/api/v1/logout")
+                        .deleteCookies("JSESSIONID")
+                        .invalidateHttpSession(true)
+                        .logoutSuccessHandler(
+                                (request, response, authentication) ->
+                                        response.setStatus(HttpServletResponse.SC_OK))
                 )
                 .exceptionHandling(exceptionHandling ->
                         exceptionHandling

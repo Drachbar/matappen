@@ -2,5 +2,5 @@ package se.matappen.matappen.dto;
 
 import java.util.List;
 
-public record IngredientSectionDto(String name, Integer sectionOrder, List<IngredientDto> ingredients) {
+public record IngredientSectionDto(String name, Integer sectionOrder, List<IngredientDto> ingredients, Integer id) {
 }

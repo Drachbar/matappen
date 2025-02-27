@@ -1,171 +1,136 @@
-import {Component} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {HttpClient} from "@angular/common/http";
+import {Component, OnInit} from '@angular/core';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
+} from "@angular/forms";
+import { HttpClient } from "@angular/common/http";
 import {CommonModule} from "@angular/common";
 import {FallbackImageConverterService} from "../../services/ImageConverterServices/fallback-image-converter.service";
 
 @Component({
-  selector: 'app-create-recipe',
-  standalone: true,
-  imports: [
-    FormsModule,
-    CommonModule,
-    ReactiveFormsModule,
-  ],
-  templateUrl: './create-recipe.component.html',
-  styleUrl: './create-recipe.component.scss'
-})
-export class CreateRecipeComponent {
-
-  recipeData = {
-    nameRecipe: '',
-    description: '',
-    sections: [
-      {
-        name: '',
-        sectionOrder: 1,
-        ingredients: [
-          {
-            name: '',
-            ingredientOrder: 1,
-            unit: '',
-            amount: 0
-          }
-        ]
-      }
+    selector: 'app-create-recipe',
+    imports: [
+        FormsModule,
+        CommonModule,
+        ReactiveFormsModule,
     ],
-    steps: [
-      {
-        description: '',
-        stepOrder: 1
-      }
-    ]
-  };
+    templateUrl: './create-recipe.component.html',
+    styleUrl: './create-recipe.component.scss'
+})
+export class CreateRecipeComponent implements OnInit {
 
-  uploadedFiles: File[] = []; // För att lagra de valda filerna
+  recipeForm: FormGroup;
+  uploadedFiles: File[] = [];
 
-  constructor(private http: HttpClient, private imageConverterService: FallbackImageConverterService) {
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private imageConverterService: FallbackImageConverterService
+  ) {
+    this.recipeForm = this.fb.group({
+      nameRecipe: ['', Validators.required],
+      description: ['', Validators.required],
+      sections: this.fb.array([]),
+      steps: this.fb.array([])
+    });
+  }
+
+  ngOnInit(): void {
+    this.addSection(); // Start med en sektion
+    this.addStep();    // Start med ett steg
+  }
+
+  get sections(): FormArray {
+    return this.recipeForm.get('sections') as FormArray;
+  }
+
+  get steps(): FormArray {
+    return this.recipeForm.get('steps') as FormArray;
+  }
+
+  addSection(): void {
+    const section = this.fb.group({
+      name: ['', Validators.required],
+      sectionOrder: [this.sections.length + 1],
+      ingredients: this.fb.array([])
+    });
+    this.sections.push(section);
+    this.addIngredient(this.sections.length - 1); // Lägg till en ingrediens i den nya sektionen
+  }
+
+  removeSection(index: number): void {
+    this.sections.removeAt(index);
+  }
+
+  addIngredient(sectionIndex: number): void {
+    const ingredients = this.sections.at(sectionIndex).get('ingredients') as FormArray;
+    ingredients.push(
+      this.fb.group({
+        name: ['', Validators.required],
+        unit: [''],
+        amount: [0],
+        ingredientOrder: [ingredients.length + 1]
+      })
+    );
+  }
+
+  removeIngredient(sectionIndex: number, ingredientIndex: number): void {
+    const ingredients = this.sections.at(sectionIndex).get('ingredients') as FormArray;
+    ingredients.removeAt(ingredientIndex);
+  }
+
+  addStep(): void {
+    this.steps.push(
+      this.fb.group({
+        description: ['', Validators.required],
+        stepOrder: [this.steps.length + 1]
+      })
+    );
+  }
+
+  removeStep(index: number): void {
+    this.steps.removeAt(index);
   }
 
   onFileSelect(event: Event): void {
     const target = event.target as HTMLInputElement;
     if (target.files) {
       const files = Array.from(target.files);
-      this.uploadedFiles = []; // Töm listan med gamla filer
+      this.uploadedFiles = [];
       files.forEach((file) => this.convertAndAddFile(file));
     }
   }
 
-  async convertAndAddFile(file: File) {
-    const maxWidth = 500; // Maximal bredd
-    const maxHeight = 600; // Maximal höjd
-    const format = 'webp'; // Exempelformat
-
+  async convertAndAddFile(file: File): Promise<void> {
     try {
-      // Skapa ett HTMLImageElement för att läsa bildens ursprungliga dimensioner
-      const img = await this.createImage(file);
-
-      // Beräkna skalenliga dimensioner baserat på maxmåtten
-      let targetWidth = img.width;
-      let targetHeight = img.height;
-
-      if (img.width > maxWidth || img.height > maxHeight) {
-        const widthRatio = maxWidth / img.width;
-        const heightRatio = maxHeight / img.height;
-        const scalingFactor = Math.min(widthRatio, heightRatio); // Välj den minsta skalningsfaktorn för att passa in i både bredd och höjd
-
-        targetWidth = img.width * scalingFactor;
-        targetHeight = img.height * scalingFactor;
-      }
-
-      // Konvertera bilden med de beräknade dimensionerna
-      const convertedImage = await this.imageConverterService.processImage(file, targetWidth, targetHeight, format, 1);
-      if (convertedImage) {
-        const blob = await (await fetch(convertedImage)).blob();
-        const convertedFile = new File([blob], file.name.split('.')[0] + '.webp', { type: 'image/webp' });
-        this.uploadedFiles.push(convertedFile); // Lägg till den konverterade bilden
+      const convertedFile = await this.imageConverterService.processImage(file, 500, 600, 'webp', 1);
+      if (convertedFile) {
+        const blob = await (await fetch(convertedFile)).blob();
+        this.uploadedFiles.push(new File([blob], `${file.name.split('.')[0]}.webp`, { type: 'image/webp' }));
       }
     } catch (error) {
       console.error('Kunde inte konvertera bilden:', error);
     }
   }
 
-// Hjälpfunktion för att skapa en bild från en fil
-  private createImage(file: File): Promise<HTMLImageElement> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const img = new Image();
-        img.onload = () => resolve(img);
-        img.onerror = (error) => reject(error);
-        img.src = event.target?.result as string;
-      };
-      reader.onerror = (error) => reject(error);
-      reader.readAsDataURL(file);
-    });
-  }
-
-  createRecipe() {
-    // Skapa ett FormData-objekt
+  createRecipe(): void {
     const formData = new FormData();
+    formData.append('recipe', JSON.stringify(this.recipeForm.value));
 
-    // Lägg till receptdata som JSON
-    formData.append(
-      'recipe',
-      new Blob([JSON.stringify(this.recipeData)], { type: 'application/json' })
-    );
+    this.uploadedFiles.forEach((file) => formData.append('images', file));
 
-    // Lägg till alla uppladdade filer
-    this.uploadedFiles.forEach((file) => {
-      formData.append('images', file);
-    });
-
-    // Skicka POST-förfrågan
     this.http.post('api/v1/recipe/add', formData).subscribe({
-      next: (response) => console.log('Receptet skapades!', response),
+      next: () => console.log('Receptet skapades!'),
       error: (error) => console.error('Det blev ett fel!', error)
     });
   }
 
-  addStep() {
-    // Lägger till ett nytt tomt steg i arrayen
-    this.recipeData.steps.push({description: '', stepOrder: this.recipeData.steps.length + 1});
-  }
-
-  removeStep(index: number) {
-    // Tar bort ett steg från arrayen
-    this.recipeData.steps.splice(index, 1);
-  }
-
-  removeSection(index: number) {
-    this.recipeData.sections.splice(index, 1);
-  }
-
-  addSection() {
-    this.recipeData.sections.push({
-      name: '',
-      sectionOrder: this.recipeData.sections.length + 1,
-      ingredients: [
-        {
-          name: '',
-          unit: '',
-          amount: 0,
-          ingredientOrder: 1
-        }
-      ]
-    });
-  }
-
-  removeIngredient(indexSection: number, indexIngredient: number) {
-    this.recipeData.sections[indexSection].ingredients.splice(indexIngredient, 1);
-  }
-
-  addIngredient(indexSection: number) {
-    this.recipeData.sections[indexSection].ingredients.push({
-      name: '',
-      unit: '',
-      amount: 0,
-      ingredientOrder: this.recipeData.sections[indexSection].ingredients.length + 1
-    })
+  getIngredients(section: AbstractControl): FormArray {
+    return section.get('ingredients') as FormArray;
   }
 }

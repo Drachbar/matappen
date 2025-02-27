@@ -5,35 +5,42 @@ import se.matappen.matappen.dto.*;
 import se.matappen.matappen.model.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
 public class RecipeMapper {
     public RecipeDetailedDto toRecipeDetailedDto(Recipe recipe) {
-        RecipeDto recipeDto = toRecipeDto(recipe);
+        final RecipeDto recipeDto = toRecipeDto(recipe);
 
-        List<RecipeStepDto> steps = recipe.getSteps().stream()
+        final List<RecipeStepDto> steps = recipe.getSteps().stream()
                 .map(this::toRecipeStepDto)
                 .collect(Collectors.toList());
 
-        List<IngredientSectionDto> sections = recipe.getSections().stream()
+        final List<IngredientSectionDto> sections = recipe.getSections().stream()
                 .map(this::toIngredientSectionDto)
                 .collect(Collectors.toList());
-        List<ImagesDto> images = recipe.getImages().stream().map(this::toImagesDto).toList();
+        final List<ImagesDto> images = recipe.getImages().stream().map(this::toImagesDto).toList();
 
         return new RecipeDetailedDto(recipeDto, steps, sections, images);
     }
 
     public RecipeDto toRecipeDto(Recipe recipe) {
+        final Optional<String> imageUrl = recipe.getImages() != null && !recipe.getImages().isEmpty()
+                ? Optional.of(recipe.getImages().getFirst().getName())
+                : Optional.empty();
+
         return new RecipeDto(
                 recipe.getId(),
                 recipe.getNameRecipe(),
                 recipe.getDescription(),
-                recipe.getCreator().getName());
+                recipe.getCreator().getName(),
+                imageUrl
+        );
     }
 
     public RecipeStepDto toRecipeStepDto(RecipeStep step) {
-        return new RecipeStepDto(step.getDescription(), step.getId());
+        return new RecipeStepDto(step.getDescription(), step.getStepOrder(), step.getId());
     }
 
     public IngredientSectionDto toIngredientSectionDto(IngredientSection section) {
@@ -44,7 +51,7 @@ public class RecipeMapper {
         return new IngredientSectionDto(
                 section.getName(),
                 section.getSectionOrder(),
-                ingredients);
+                ingredients, section.getId());
     }
 
     public IngredientDto toIngredientDto(Ingredient ingredient) {
@@ -52,10 +59,11 @@ public class RecipeMapper {
                 ingredient.getName(),
                 ingredient.getUnit(),
                 ingredient.getIngredientOrder(),
-                ingredient.getAmount());
+                ingredient.getAmount(),
+                ingredient.getId());
     }
 
     public ImagesDto toImagesDto(RecipeImage image) {
-        return new ImagesDto(image.getName(), image.getWidth(), image.getHeight(), image.getOrder());
+        return new ImagesDto(image.getName(), image.getWidth(), image.getHeight(), image.getOrder(), image.getImageId());
     }
 }

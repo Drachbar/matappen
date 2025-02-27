@@ -1,24 +1,29 @@
-import { Component } from '@angular/core';
-import {RouterLink, RouterOutlet} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
 import {FormsModule} from "@angular/forms";
-import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {UpperCasePipe} from "@angular/common";
+import {NavComponent} from "./components/nav/nav.component";
+import {AuthStateService} from "./services/auth-state.service";
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, FormsModule, HttpClientModule, RouterLink, UpperCasePipe],
+  imports: [RouterOutlet, FormsModule, UpperCasePipe, NavComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Mattias matblogg';
 
   formGetUser = {
     email: '',
   };
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private authState: AuthStateService) {
+  }
+
+  ngOnInit(): void {
+    this.testAuth()
   }
 
   getUserByEmail() {
@@ -30,8 +35,12 @@ export class AppComponent {
 
   testAuth() {
     this.http.get('api/v1/testAuthentication', {responseType: 'text'}).subscribe({
-      next: (response) => console.log('Success:', response),
-      error: (error) => console.error('Failure:', error)
+      next: _ => {
+        this.authState.setLoggedIn(true)
+      },
+      error: _ => {
+        this.authState.setLoggedIn(false)
+      }
     });
   }
 }

@@ -1,5 +1,6 @@
 package se.matappen.matappen.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -38,8 +39,12 @@ public class RecepieController {
 
     @PostMapping("/add")
     public ResponseEntity<Void> addRecipe(
-            @RequestPart("recipe") Recipe recipe,
+            @RequestPart("recipe") String recipeJson,
             @RequestPart("images") List<MultipartFile> images) throws IOException {
+
+        // Deserialisera JSON till ett Recipe-objekt
+        ObjectMapper objectMapper = new ObjectMapper();
+        Recipe recipe = objectMapper.readValue(recipeJson, Recipe.class);
 
         // Hämta den inloggade användaren
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -64,8 +69,6 @@ public class RecepieController {
                 if (bufferedImage == null) {
                     throw new IOException("Kan inte läsa bildfilen: " + targetFile.getName());
                 }
-                // Returnera bildens bredd
-                bufferedImage.getWidth();
 
                 RecipeImage recipeImage = new RecipeImage();
                 recipeImage.setFkRecipe(recipe);
@@ -74,7 +77,7 @@ public class RecepieController {
                 recipeImage.setWidth(bufferedImage.getWidth());
                 recipeImage.setHeight(bufferedImage.getHeight());
 
-                recipe.getImages().add(recipeImage); // Lägg till bilder i receptet
+                recipe.getImages().add(recipeImage);
             }
         }
 
@@ -86,6 +89,25 @@ public class RecepieController {
     @GetMapping("/getRecipes")
     public ResponseEntity<List<RecipeDto>> getRecipesByName(@RequestParam final String name) {
         List<Recipe> recipes = recipeRepository.findByNameRecipeContaining(name);
+        List<RecipeDto> recipeDtos = recipes.stream()
+                .map(recipeMapper::toRecipeDto).toList();
+        return ResponseEntity.ok(recipeDtos);
+    }
+
+    @GetMapping("/getMyRecipes")
+    public ResponseEntity<List<RecipeDto>> getMyRecipes() {
+        final Authentication autentication = SecurityContextHolder.getContext().getAuthentication();
+        final String email = autentication.getName();
+        final Integer id = userRepository.findByEmail(email).getId();
+        List<Recipe> recipes = recipeRepository.findByCreatorId(id);
+        List<RecipeDto> recipeDtos = recipes.stream()
+                .map(recipeMapper::toRecipeDto).toList();
+        return ResponseEntity.ok(recipeDtos);
+    }
+
+    @GetMapping("/getAllRecipes")
+    public ResponseEntity<List<RecipeDto>> getRecipesByName() {
+        List<Recipe> recipes = recipeRepository.findAll();
         List<RecipeDto> recipeDtos = recipes.stream()
                 .map(recipeMapper::toRecipeDto).toList();
         return ResponseEntity.ok(recipeDtos);
