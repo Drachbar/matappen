@@ -1,14 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
-@use 'bootstrap/scss/bootstrap';
+@use "bootstrap/scss/bootstrap";
 
 body {
   background-color: var(--mainBackground);
 }
 
-h2, h3, h4 {
+h2,
+h3,
+h4 {
   color: var(--headerColor);
   a {
-    font-weight: bold
+    font-weight: bold;
   }
 }
 
