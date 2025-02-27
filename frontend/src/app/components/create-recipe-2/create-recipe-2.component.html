@@ -2,10 +2,12 @@
   [formGroup]="recipeForm"
   (ngSubmit)="createRecipe()"
   enctype="multipart/form-data"
+  class="container my-4"
 >
-  <fieldset class="card m-3 p-3 border-0 shadow-sm">
-    <legend>Ladda upp bilder</legend>
-    <div>
+  <!-- Ladda upp bilder -->
+  <fieldset class="card p-4 border-0 shadow-sm mb-4">
+    <legend class="h5">Ladda upp bilder</legend>
+    <div class="d-flex align-items-center gap-3">
       <input
         type="file"
         #fileInput
@@ -17,80 +19,101 @@
         Välj filer
       </button>
       @if (!!previewImages.length) {
-      <span class="ms-3">{{ previewImages.length + 1 }} filer valda</span>
+      <span class="text-muted">{{ previewImages.length + 1 }} filer valda</span>
       }
     </div>
     @if (!!previewImages.length) {
-    <div>
-      <ul>
-        @for (item of previewImages; track item; let index = $index) {
-        <li class="list-unstyled m-4">
-          <img [src]="item.url" alt="{{ item.file.name }}" />
-          <button
-            type="button"
-            class="btn btn-danger ms-3"
-            (click)="removeImage(index)"
-          >
-            Ta bort bild
-          </button>
-        </li>
-        }
-      </ul>
+    <div class="d-flex flex-wrap mt-3 gap-3">
+      @for (item of previewImages; track item; let index = $index) {
+      <div class="position-relative">
+        <img
+          [src]="item.url"
+          alt="{{ item.file.name }}"
+          class="img-thumbnail"
+          style="max-width: 150px; max-height: 150px"
+        />
+        <button
+          type="button"
+          class="btn btn-danger btn-sm position-absolute top-0 end-0"
+          (click)="removeImage(index)"
+        >
+          ✕
+        </button>
+      </div>
+      }
     </div>
     }
   </fieldset>
 
-  <fieldset class="card m-3 p-3 border-0 shadow-sm">
-    <legend>Översikt</legend>
-    <label for="recipe-name">Namn på recept:</label>
-    <input id="recipe-name" [formControl]="nameRecipe" />
-    <label for="recipe-description">Beskrivning:</label>
-    <textarea
-      id="recipe-description"
-      [formControl]="recipeDescription"
-      required
-    ></textarea>
+  <!-- Receptinformation -->
+  <fieldset class="card p-4 border-0 shadow-sm mb-4">
+    <legend class="h5">Översikt</legend>
+    <div class="mb-3">
+      <label for="recipe-name" class="form-label">Namn på recept:</label>
+      <input id="recipe-name" class="form-control" [formControl]="nameRecipe" />
+    </div>
+    <div class="mb-3">
+      <label for="recipe-description" class="form-label">Beskrivning:</label>
+      <textarea
+        id="recipe-description"
+        class="form-control"
+        [formControl]="recipeDescription"
+        required
+      ></textarea>
+    </div>
   </fieldset>
 
-  <fieldset formArrayName="sections" class="card m-3 p-3 border-0 shadow-sm">
-    <legend>Recept</legend>
+  <!-- Ingredienser -->
+  <fieldset formArrayName="sections" class="card p-4 border-0 shadow-sm mb-4">
+    <legend class="h5">Ingrediensgrupper</legend>
     @for (ingredientSection of sections.controls; track ingredientSection; let i
     = $index) {
-    <fieldset [formGroupName]="i">
-      <legend>Ingrediensgrupp {{ i + 1 }}</legend>
-      <label for="section-name-{{ i }}">Namn:</label>
-      <input id="section-name-{{ i }}" formControlName="name" />
-      <fieldset formArrayName="ingredients">
-        <legend>Ingredienser</legend>
+    <fieldset [formGroupName]="i" class="mb-4 p-3 border rounded">
+      <legend class="h6">Ingrediensgrupp {{ i + 1 }}</legend>
+      <div class="mb-3">
+        <label for="section-name-{{ i }}" class="form-label">Namn:</label>
+        <input
+          id="section-name-{{ i }}"
+          class="form-control"
+          formControlName="name"
+        />
+      </div>
+
+      <!-- Ingredienser -->
+      <fieldset formArrayName="ingredients" class="mb-3">
+        <legend class="h6">Ingredienser</legend>
         @for (ingredient of getIngredients(i).controls; track ingredient; let j
         = $index) {
         <div [formGroupName]="j">
           <label for="ingredient-name-{{ i }}-{{ j }}">Namn:</label>
-          <input id="ingredient-name-{{ i }}-{{ j }}" formControlName="name" />
+          <input
+            id="ingredient-name-{{ i }}-{{ j }}"
+            formControlName="name"
+            placeholder="Namn"
+            class="form-control"
+          />
 
           <label for="ingredient-unit-{{ i }}-{{ j }}">Enhet:</label>
-          <input id="ingredient-unit-{{ i }}-{{ j }}" formControlName="unit" />
+          <input
+            id="ingredient-unit-{{ i }}-{{ j }}"
+            formControlName="unit"
+            class="form-control"
+          />
 
           <label for="ingredient-amount-{{ i }}-{{ j }}">Mängd:</label>
           <input
             id="ingredient-amount-{{ i }}-{{ j }}"
             formControlName="amount"
+            class="form-control"
           />
 
-          <button
-            type="button"
-            class="btn btn-primary"
-            (click)="removeIngredient(i, j)"
-          >
-            Ta bort ingrediens
-          </button>
           <button
             type="button"
             class="btn btn-secondary"
             (click)="moveIngredientUp(i, j)"
             [disabled]="j === 0"
           >
-            Flytta upp ingrediens
+            ▲
           </button>
           <button
             type="button"
@@ -98,7 +121,13 @@
             (click)="moveIngredientDown(i, j)"
             [disabled]="j === getIngredients(i).length - 1"
           >
-            Flytta ned ingrediens
+            ▼</button
+          ><button
+            type="button"
+            class="btn btn-primary"
+            (click)="removeIngredient(i, j)"
+          >
+            Ta bort ingrediens
           </button>
           <!-- ... existing code ... -->
         </div>
@@ -117,7 +146,7 @@
         (click)="moveSectionUp(i)"
         [disabled]="i === 0"
       >
-        Flytta upp
+        ▲
       </button>
       <button
         type="button"
@@ -125,7 +154,7 @@
         (click)="moveSectionDown(i)"
         [disabled]="i === sections.length - 1"
       >
-        Flytta ner
+        ▼
       </button>
       <button type="button" class="btn btn-primary" (click)="removeSection(i)">
         Ta bort ingrediensgrupp
@@ -137,44 +166,50 @@
     </button>
   </fieldset>
 
-  <fieldset formArrayName="steps" class="card m-3 p-3 border-0 shadow-sm">
-    <legend>Steg</legend>
+  <!-- Steg -->
+  <fieldset formArrayName="steps" class="card p-4 border-0 shadow-sm mb-4">
+    <legend class="h5">Steg</legend>
     @for (step of steps.controls; track step; let i = $index) {
-    <div [formGroupName]="i">
-      <label for="step-description-{{ i }}">Steg {{ i + 1 }}</label>
+    <div [formGroupName]="i" class="mb-3">
+      <label for="step-description-{{ i }}" class="form-label"
+        >Steg {{ i + 1 }}</label
+      >
       <textarea
         id="step-description-{{ i }}"
         formControlName="description"
-        class="w-100"
+        class="form-control"
       ></textarea>
-      <button type="button" class="btn btn-primary" (click)="removeStep(i)">
-        Ta bort steg
-      </button>
-      <button
-        type="button"
-        class="btn btn-secondary"
-        (click)="moveStepUp(i)"
-        [disabled]="i === 0"
-      >
-        Flytta upp
-      </button>
-      <button
-        type="button"
-        class="btn btn-secondary"
-        (click)="moveStepDown(i)"
-        [disabled]="i === steps.length - 1"
-      >
-        Flytta ner
-      </button>
+
+      <div class="btn-group mt-2">
+        <button
+          type="button"
+          class="btn btn-light"
+          (click)="moveStepUp(i)"
+          [disabled]="i === 0"
+        >
+          ▲
+        </button>
+        <button
+          type="button"
+          class="btn btn-light"
+          (click)="moveStepDown(i)"
+          [disabled]="i === steps.length - 1"
+        >
+          ▼
+        </button>
+        <button type="button" class="btn btn-danger" (click)="removeStep(i)">
+          Ta bort
+        </button>
+      </div>
     </div>
     }
-    <button type="button" class="btn btn-primary" (click)="addStep()">
-      Lägg till steg
+    <button type="button" class="btn btn-outline-dark" (click)="addStep()">
+      + Lägg till steg
     </button>
   </fieldset>
 
-  <button type="submit" class="btn btn-primary">
-    <!--          [disabled]="recipeForm.invalid">-->
+  <button type="submit" class="btn btn-dark py-4 w-100">
+    <!-- [disabled]="recipeForm.invalid">-->
     Skapa recept
   </button>
 </form>

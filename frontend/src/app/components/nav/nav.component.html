@@ -4,36 +4,34 @@
   <button
     class="navbar-toggler"
     type="button"
-    data-bs-toggle="collapse"
-    data-bs-target="#navbarContent"
+    (click)="isCollapsed = !isCollapsed"
   >
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div
-    class="collapse navbar-collapse justify-content-between"
-    id="navbarContent"
-  >
+  <div class="collapse navbar-collapse" [ngbCollapse]="isCollapsed">
     <ul class="navbar-nav text-uppercase mx-auto">
-      <li class="nav-item" *ngIf="!authState.isLoggedIn()">
+      @if (!authState.isLoggedIn()) {
+      <li class="nav-item">
         <a class="nav-link" routerLink="/register" routerLinkActive="active"
           >Skapa konto</a
         >
       </li>
-      <li class="nav-item" *ngIf="!authState.isLoggedIn()">
+      <li class="nav-item">
         <a class="nav-link" routerLink="/login" routerLinkActive="active"
           >Logga in</a
         >
       </li>
-      <li class="nav-item" *ngIf="authState.isLoggedIn()">
+      } @if (authState.isLoggedIn()) {
+      <li class="nav-item">
         <a
           class="nav-link"
-          routerLink="/recipe/create-recipe-2"
+          routerLink="/recipe/create-recipe"
           routerLinkActive="active"
           >Skapa recept</a
         >
       </li>
-      <li class="nav-item" *ngIf="authState.isLoggedIn()">
+      <li class="nav-item">
         <a
           class="nav-link"
           routerLink="/recipe/my-recipes"
@@ -42,16 +40,18 @@
         >
       </li>
       <li class="nav-item">
+        <a class="nav-link" routerLink="/account" routerLinkActive="active"
+          >Mitt konto</a
+        >
+      </li>
+      }
+
+      <li class="nav-item">
         <a
           class="nav-link"
           routerLink="/recipe/all-recipes"
           routerLinkActive="active"
           >Alla recept</a
-        >
-      </li>
-      <li class="nav-item" *ngIf="authState.isLoggedIn()">
-        <a class="nav-link" routerLink="/account" routerLinkActive="active"
-          >Mitt konto</a
         >
       </li>
     </ul>
