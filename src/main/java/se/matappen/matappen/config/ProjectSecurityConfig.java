@@ -14,7 +14,7 @@ import se.matappen.matappen.security.SimpleAuthenticationEntryPoint;
 import se.matappen.matappen.security.SimpleAuthenticationFailureHandler;
 import se.matappen.matappen.security.SimpleAuthenticationSuccessHandler;
 
-import java.util.Collections;
+import java.util.Arrays;
 
 @Component
 @AllArgsConstructor
@@ -28,10 +28,10 @@ public class ProjectSecurityConfig {
     SecurityFilterChain defaultSecurityFilterChain(final HttpSecurity http) throws Exception {
         http.cors(cors -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
-                    config.setAllowedMethods(Collections.singletonList("*"));
+                    config.setAllowedOrigins(Arrays.asList("http://localhost:4200", "https://matappen.findersson.se"));
+                    config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     config.setAllowCredentials(true);
-                    config.setAllowedHeaders(Collections.singletonList("*"));
+                    config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization"));
                     config.setMaxAge(3600L);
                     cors.configurationSource(request -> config);
                 })
