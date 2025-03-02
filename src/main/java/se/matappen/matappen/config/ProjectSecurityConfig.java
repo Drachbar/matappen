@@ -28,7 +28,10 @@ public class ProjectSecurityConfig {
     SecurityFilterChain defaultSecurityFilterChain(final HttpSecurity http) throws Exception {
         http.cors(cors -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(Arrays.asList("http://localhost:4200", "https://matappen.findersson.se"));
+                    config.setAllowedOrigins(Arrays.asList(
+                            "http://localhost:4200",
+                            "https://matappen.findersson.se",
+                            "https://www.matappen.findersson.se"));
                     config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     config.setAllowCredentials(true);
                     config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization"));
